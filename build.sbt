@@ -89,3 +89,11 @@ sonatypeProjectHosting := Some(
   GitLabHosting("taig", "sbt-houserules", "mail@taig.io")
 )
 sonatypeProfileName := "io.taig"
+commands += Command.command("publishAndRelease") { state =>
+  val snapshot = isSnapshot
+    .get(Project.extract(state).structure.data)
+    .getOrElse(sys.error("Is this a snapshot?"))
+
+  if (snapshot) "+publishSigned" :: state
+  else "+publishSigned" :: "sonatypeReleaseAll" :: state
+}
