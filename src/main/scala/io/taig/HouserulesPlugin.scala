@@ -189,7 +189,7 @@ object HouserulesPlugin extends AutoPlugin {
     scalacOptions ++= CrossVersion
       .partialVersion(scalaVersion.value)
       .collect {
-        case (2, minor) if minor <= 12 =>
+        case (2, minor) if minor <= 11 =>
           "-Ywarn-unused-import" ::
             Nil
       }
