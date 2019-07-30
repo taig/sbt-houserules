@@ -59,10 +59,7 @@ object HouserulesPlugin extends AutoPlugin {
       ),
       sonatypeProfileName := "io.taig",
       commands += Command.command("publishAndRelease") { state =>
-        val snapshot = isSnapshot
-          .get(Project.extract(state).structure.data)
-          .getOrElse(sys.error("Is this a snapshot?"))
-
+        val snapshot: Boolean = Project.extract(state).get(isSnapshot)
         if (snapshot) "+publishSigned" :: state
         else "+publishSigned" :: "sonatypeReleaseAll" :: state
       }
