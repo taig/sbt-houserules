@@ -166,9 +166,16 @@ object HouserulesPlugin extends AutoPlugin {
         "-unchecked" ::
         "-Ypatmat-exhaust-depth" :: "40" ::
         "-Ywarn-dead-code" ::
-        "-Ywarn-unused:imports" ::
         "-Ywarn-value-discard" ::
         Nil,
+    scalacOptions ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect {
+        case (2, minor) if minor >= 12 =>
+          "-Ywarn-unused:imports" ::
+            Nil
+      }
+      .getOrElse(List.empty),
     scalacOptions ++= CrossVersion
       .partialVersion(scalaVersion.value)
       .collect {
@@ -179,10 +186,21 @@ object HouserulesPlugin extends AutoPlugin {
             Nil
       }
       .getOrElse(List.empty),
+    scalacOptions ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect {
+        case (2, minor) if minor <= 12 =>
+          "-Ywarn-unused-import" ::
+            Nil
+      }
+      .getOrElse(List.empty),
     scalacOptions ++= {
       if (mode.value == Mode.Strict) List("-Xfatal-warnings") else Nil
     },
-    scalacOptions in (Compile, console) -= "-Ywarn-unused:imports",
+    scalacOptions in (Compile, console) --=
+      "-Ywarn-unused:imports" ::
+        "-Ywarn-unused-import" ::
+        Nil,
     scalafmtAll := {
       (scalafmt in Compile)
         .dependsOn(scalafmt in Test)
