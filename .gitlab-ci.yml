@@ -33,4 +33,4 @@ publish:
   - master
   - tags
   script:
-  - sbt publishSigned
+  - sbt publishSigned sonatypeRelease
