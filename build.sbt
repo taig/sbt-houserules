@@ -15,7 +15,7 @@ addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.5")
 
 name := "sbt-houserules"
 
-organization := "io.taog"
+organization := "io.taig"
 
 releaseCommitMessage := s"Release ${releaseTagName.value}"
 
