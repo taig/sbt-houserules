@@ -129,7 +129,7 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
-    githubProject := normalizedName.value,
+    githubProject := (normalizedName in LocalRootProject).value,
     mode := sys.props
       .get("mode")
       .flatMap(Mode.parse)
