@@ -16,7 +16,8 @@ object HouserulesPlugin extends AutoPlugin {
     val noPublishSettings: Seq[Def.Setting[_]] = Def.settings(
       publish := {},
       publishLocal := {},
-      publishArtifact := false
+      publishArtifact := false,
+      skip in publish := true
     )
 
     val sonatypePublishSettings: Seq[Def.Setting[_]] = Def.settings(
