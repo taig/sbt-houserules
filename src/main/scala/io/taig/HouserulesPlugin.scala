@@ -57,12 +57,7 @@ object HouserulesPlugin extends AutoPlugin {
       sonatypeProjectHosting := Some(
         GitLabHosting("taig", githubProject.value, "mail@taig.io")
       ),
-      sonatypeProfileName := "io.taig",
-      commands += Command.command("publishAndRelease") { state =>
-        val snapshot: Boolean = Project.extract(state).get(isSnapshot)
-        if (snapshot) "+publishSigned" :: state
-        else "+publishSigned" :: "sonatypeReleaseAll" :: state
-      }
+      sonatypeProfileName := "io.taig"
     )
 
     val mode =
@@ -129,6 +124,11 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
+    commands += Command.command("publishAndRelease") { state =>
+      val snapshot: Boolean = Project.extract(state).get(isSnapshot)
+      if (snapshot) "+publishSigned" :: state
+      else "+publishSigned" :: "sonatypeReleaseAll" :: state
+    },
     githubProject := (normalizedName in LocalRootProject).value,
     mode := sys.props
       .get("mode")
