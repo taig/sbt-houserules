@@ -124,11 +124,6 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
-    commands += Command.command("publishAndRelease") { state =>
-      val snapshot: Boolean = Project.extract(state).get(isSnapshot)
-      if (snapshot) "+publishSigned" :: state
-      else "+publishSigned" :: "sonatypeReleaseAll" :: state
-    },
     githubProject := (normalizedName in LocalRootProject).value,
     mode := sys.props
       .get("mode")
@@ -154,6 +149,11 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
+    commands += Command.command("publishAndRelease") { state =>
+      val snapshot: Boolean = Project.extract(state).get(isSnapshot)
+      if (snapshot) "+publishSigned" :: state
+      else "+publishSigned" :: "sonatypeReleaseAll" :: state
+    },
     libraryDependencies ++=
       "com.github.mpilquist" %% "simulacrum" % "0.19.0" % "provided" ::
         Nil,
