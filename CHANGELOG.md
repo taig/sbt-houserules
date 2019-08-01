@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.3
+
+_2019-08-01_
+
+ * Add `micrositeSettings` to publish pre-configured sbt-microsites modules
+
 ## 0.0.2
 
 _2019-07-31_
