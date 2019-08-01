@@ -67,7 +67,7 @@ object HouserulesPlugin extends AutoPlugin {
     )
 
     val micrositeSettings: Seq[Def.Setting[_]] =
-      noPublishSettings ++ MicrositesPlugin.projectSettings ++ Def.settings(
+      noPublishSettings ++ Def.settings(
         micrositeAuthor := "Niklas Klein",
         micrositeBaseUrl := s"/${githubProject.value}",
         micrositeCompilingDocsTool := WithMdoc,
