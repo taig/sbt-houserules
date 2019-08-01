@@ -92,33 +92,13 @@ object HouserulesPlugin extends AutoPlugin {
     val scalafmtGenerateConfig = taskKey[File]("Generate .scalafmt.conf")
 
     val scalafmtRules = settingKey[Seq[String]]("scalafmt rules")
-
-    val releaseSettings: Seq[Def.Setting[_]] = Def.settings(
-      releaseCommitMessage := s"Release ${releaseTagName.value}",
-      releaseProcess := Seq[ReleaseStep](
-        checkSnapshotDependencies,
-        releaseStepCommandAndRemaining("scalafmtCheckAll"),
-        runClean,
-        runTest,
-        inquireVersions,
-        setReleaseVersion,
-        ReleaseSteps.updateChangelog,
-        commitReleaseVersion,
-        tagRelease,
-        setNextVersion,
-        ReleaseSteps.commitNextVersion,
-        pushChanges
-      ),
-      releaseTagComment := s"Release ${releaseTagName.value}",
-      releaseTagName := version.value
-    )
   }
 
   import autoImport._
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = globals
+  override def globalSettings: Seq[Def.Setting[_]] = globals ++ releaseSettings
 
   override def projectSettings: Seq[Def.Setting[_]] =
     compilerPlugins ++ projects
@@ -240,5 +220,25 @@ object HouserulesPlugin extends AutoPlugin {
         .value
     },
     scalafmtConfig := scalafmtGenerateConfig.value
+  )
+
+  lazy val releaseSettings: Seq[Def.Setting[_]] = Def.settings(
+    releaseCommitMessage := s"Release ${releaseTagName.value}",
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      releaseStepCommandAndRemaining("scalafmtCheckAll"),
+      runClean,
+      runTest,
+      inquireVersions,
+      setReleaseVersion,
+      ReleaseSteps.updateChangelog,
+      commitReleaseVersion,
+      tagRelease,
+      setNextVersion,
+      ReleaseSteps.commitNextVersion,
+      pushChanges
+    ),
+    releaseTagComment := s"Release ${releaseTagName.value}",
+    releaseTagName := version.value
   )
 }
