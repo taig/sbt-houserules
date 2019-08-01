@@ -4,7 +4,6 @@ import java.time.Instant
 
 import com.typesafe.sbt.SbtPgp.autoImportImpl.{pgpPassphrase, pgpSecretRing}
 import mdoc.MdocPlugin.autoImport._
-import microsites.MicrositesPlugin
 import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
@@ -14,7 +13,7 @@ import sbtrelease.ReleasePlugin.autoImport._
 import xerial.sbt.Sonatype.GitLabHosting
 import xerial.sbt.Sonatype.autoImport._
 
-object HouserulesPlugin extends AutoPlugin {
+object TaigHouserulesPlugin extends AutoPlugin {
   object autoImport {
     val githubProject = settingKey[String]("Github project identifier")
 
