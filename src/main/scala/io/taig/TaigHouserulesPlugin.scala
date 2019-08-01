@@ -97,10 +97,10 @@ object TaigHouserulesPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = globals ++ releaseSettings
+  override def globalSettings: Seq[Def.Setting[_]] = globals
 
   override def projectSettings: Seq[Def.Setting[_]] =
-    compilerPlugins ++ projects
+    compilerPlugins ++ releaseSettings ++ projects
 
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++=
