@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.4
+
+_2019-08-01_
+
+ * Apply sbt-release settings to every project
+
 ## 0.0.3
 
 _2019-08-01_
