@@ -8,6 +8,7 @@ import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import sbtrelease.ReleasePlugin
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import sbtrelease.ReleasePlugin.autoImport._
 import xerial.sbt.Sonatype.GitLabHosting
@@ -94,6 +95,8 @@ object TaigHouserulesPlugin extends AutoPlugin {
   }
 
   import autoImport._
+
+  override def requires: Plugins = ReleasePlugin
 
   override def trigger = allRequirements
 
