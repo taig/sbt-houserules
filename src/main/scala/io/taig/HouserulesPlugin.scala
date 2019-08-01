@@ -1,6 +1,11 @@
 package io.taig
 
+import java.time.Instant
+
 import com.typesafe.sbt.SbtPgp.autoImportImpl.{pgpPassphrase, pgpSecretRing}
+import mdoc.MdocPlugin.autoImport._
+import microsites.MicrositesPlugin
+import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
 import sbt._
@@ -60,6 +65,26 @@ object HouserulesPlugin extends AutoPlugin {
       ),
       sonatypeProfileName := "io.taig"
     )
+
+    val micrositeSettings: Seq[Def.Setting[_]] =
+      noPublishSettings ++ MicrositesPlugin.projectSettings ++ Def.settings(
+        micrositeAuthor := "Niklas Klein",
+        micrositeBaseUrl := s"/${githubProject.value}",
+        micrositeCompilingDocsTool := WithMdoc,
+        micrositeCssDirectory := mdocIn.value / "stylesheet",
+        micrositeGithubOwner := "taig",
+        micrositeGithubRepo := githubProject.value,
+        micrositeGithubToken := Option(System.getenv("GITHUB_TOKEN")),
+        micrositeGitterChannel := false,
+        micrositeFooterText := Some(
+          s"<p>Built for version ${version.value} at ${Instant.now()}</p>"
+        ),
+        micrositeImgDirectory := mdocIn.value / "image",
+        micrositeJsDirectory := mdocIn.value / "javascript",
+        micrositePushSiteWith := GitHub4s,
+        micrositeTwitterCreator := "@tttaig",
+        micrositeUrl := "http://taig.io"
+      )
 
     val mode =
       settingKey[Mode]("Execution mode, either 'tolerant' or 'strict'")
