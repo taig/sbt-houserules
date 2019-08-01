@@ -24,7 +24,7 @@ test:
   image: $CONTAINER_IMAGE:$CI_BUILD_REF_NAME
   script:
   - sbt -Dmode=strict scalafmtCheckAll
-  - sbt publishLocal
+  - sbt -Dmode=strict publishLocal
 
 publish:
   stage: publish
