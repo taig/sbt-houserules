@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.5
+
+_2019-09-13_
+
+ * Upgrade to sbt-sonatype 3.7
+ * Upgrade to sbt-scalafmt 2.0.4
+ * Upgrade to sbt-micorsites 0.9.4
+ * Upgrade to sbt 1.3.0
+
 ## 0.0.4
 
 _2019-08-01_
