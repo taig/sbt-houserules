@@ -60,7 +60,7 @@ object TaigHouserulesPlugin extends AutoPlugin {
       },
       publishArtifact in Test := false,
       publishMavenStyle := true,
-      publishTo := sonatypePublishTo.value,
+      publishTo := sonatypePublishToBundle.value,
       sonatypeProjectHosting := Some(
         GitLabHosting("taig", githubProject.value, "mail@taig.io")
       ),
@@ -161,7 +161,7 @@ object TaigHouserulesPlugin extends AutoPlugin {
     commands += Command.command("publishAndRelease") { state =>
       val snapshot: Boolean = Project.extract(state).get(isSnapshot)
       if (snapshot) "+publishSigned" :: state
-      else "+publishSigned" :: "sonatypeReleaseAll" :: state
+      else "+publishSigned" :: "sonatypeBundleRelease" :: state
     },
     libraryDependencies ++=
       "com.github.mpilquist" %% "simulacrum" % "0.19.0" % "provided" ::

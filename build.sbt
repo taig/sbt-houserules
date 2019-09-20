@@ -81,7 +81,7 @@ pomIncludeRepository := { _ =>
 }
 publishArtifact in Test := false
 publishMavenStyle := true
-publishTo := sonatypePublishTo.value
+publishTo := sonatypePublishToBundle.value
 sonatypeProjectHosting := Some(
   GitLabHosting("taig", "sbt-houserules", "mail@taig.io")
 )
