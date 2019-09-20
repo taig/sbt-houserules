@@ -1,13 +1,18 @@
 # Changelog
 
 ## 0.0.7
-## 0.0.6
 
 _2019-09-20_
 
  * Enable sonatypeBundleRelease
  * Upgrade to sbt-pgp 2.0.0
  * Upgrade to sbt-scalafmt 2.0.5
+
+## 0.0.6
+
+_2019-09-20_
+
+No release available, due to a misconfiguration. Use 0.0.7 instead.
 
 ## 0.0.5
 
