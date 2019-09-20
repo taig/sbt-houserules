@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.8
+
+_2019-09-20_
+
+ * Add environment validation during `publishAndRelease`
+
 ## 0.0.7
 
 _2019-09-20_
