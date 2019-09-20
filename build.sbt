@@ -89,5 +89,5 @@ sonatypeProfileName := "io.taig"
 commands += Command.command("publishAndRelease") { state =>
   val snapshot: Boolean = Project.extract(state).get(isSnapshot)
   if (snapshot) "+publishSigned" :: state
-  else "+publishSigned" :: "sonatypeReleaseAll" :: state
+  else "+publishSigned" :: "sonatypeBundleRelease" :: state
 }
