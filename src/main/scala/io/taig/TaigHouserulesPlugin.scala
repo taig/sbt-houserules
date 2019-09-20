@@ -2,7 +2,7 @@ package io.taig
 
 import java.time.Instant
 
-import com.typesafe.sbt.SbtPgp.autoImportImpl.{pgpPassphrase, pgpSecretRing}
+import com.jsuereth.sbtpgp.SbtPgp.autoImport._
 import mdoc.MdocPlugin.autoImport._
 import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
@@ -45,6 +45,7 @@ object TaigHouserulesPlugin extends AutoPlugin {
           s"https://raw.githubusercontent.com/taig/${githubProject.value.toLowerCase}/master/LICENSE"
         )
       ),
+      useGpg := false,
       pgpPassphrase := sys.env
         .get("PGP_PASSWORD")
         .fold(Array.empty[Char])(_.toCharArray)

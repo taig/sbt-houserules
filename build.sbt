@@ -3,7 +3,7 @@ import xerial.sbt.Sonatype.GitLabHosting
 
 addSbtPlugin("com.47deg" % "sbt-microsites" % "0.9.4")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.11")
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.2")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.0.0")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.0.5")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.0")
@@ -66,6 +66,7 @@ licenses := Seq(
     s"https://raw.githubusercontent.com/taig/sbt-houserules/master/LICENSE"
   )
 )
+useGpg := false
 pgpPassphrase := sys.env
   .get("PGP_PASSWORD")
   .fold(Array.empty[Char])(_.toCharArray)
