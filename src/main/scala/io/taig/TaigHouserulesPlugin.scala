@@ -159,9 +159,20 @@ object TaigHouserulesPlugin extends AutoPlugin {
 
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
     commands += Command.command("publishAndRelease") { state =>
+      val validateEnv: String => Unit =
+        key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
+
+      validateEnv("SONATYPE_USERNAME")
+      validateEnv("SONATYPE_PASSWORD")
+
       val snapshot: Boolean = Project.extract(state).get(isSnapshot)
+
       if (snapshot) "+publishSigned" :: state
-      else "+publishSigned" :: "sonatypeBundleRelease" :: state
+      else {
+        validateEnv("PGP_SECRING")
+        validateEnv("PGP_PASSWORD")
+        "+publishSigned" :: "sonatypeBundleRelease" :: state
+      }
     },
     libraryDependencies ++=
       "com.github.mpilquist" %% "simulacrum" % "0.19.0" % "provided" ::
