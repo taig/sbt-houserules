@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.9
+
+_2019-09-25_
+
+ * Provide defaults for `name` and `normalizedName` in `houserulesSettings`
+ * Preset useful microsite `mdoc` variables
+ * Upgrade to sbt 1.3.2 
+
 ## 0.0.8
 
 _2019-09-20_
