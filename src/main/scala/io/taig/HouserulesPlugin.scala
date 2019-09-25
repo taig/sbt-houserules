@@ -14,7 +14,7 @@ import sbtrelease.ReleasePlugin.autoImport._
 import xerial.sbt.Sonatype.GitLabHosting
 import xerial.sbt.Sonatype.autoImport._
 
-object TaigHouserulesPlugin extends AutoPlugin {
+object HouserulesPlugin extends AutoPlugin {
   object autoImport {
     val githubProject = settingKey[String]("Github project identifier")
 
@@ -154,7 +154,11 @@ object TaigHouserulesPlugin extends AutoPlugin {
         "maxColumn = 80" ::
         "rewrite.rules = [sortimports]" ::
         "version=2.0.0" ::
-        Nil
+        Nil,
+    shellPrompt := { state =>
+      val name = Project.extract(state).get(normalizedName)
+      s"sbt:$name> "
+    }
   )
 
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
@@ -175,8 +179,18 @@ object TaigHouserulesPlugin extends AutoPlugin {
       }
     },
     libraryDependencies ++=
-      "com.github.mpilquist" %% "simulacrum" % "0.19.0" % "provided" ::
+      "org.typelevel" %% "simulacrum" % "1.0.0" % "provided" ::
         Nil,
+    name := {
+      val base = (LocalRootProject / name).value.capitalize
+      val module = name.value.capitalize
+      if (base == module) base else module
+    },
+    normalizedName := {
+      val base = (LocalRootProject / normalizedName).value
+      val module = normalizedName.value
+      if (base == module) base else s"$base-$module"
+    },
     scalacOptions ++=
       "-deprecation" ::
         "-feature" ::
