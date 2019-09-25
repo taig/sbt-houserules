@@ -69,8 +69,14 @@ object HouserulesPlugin extends AutoPlugin {
 
     val micrositeSettings: Seq[Def.Setting[_]] =
       noPublishSettings ++ Def.settings(
+        mdocVariables ++=
+          Map(
+            "NAME" -> (LocalRootProject / name).value,
+            "ORGANIZATION" -> (LocalRootProject / organization).value,
+            "VERSION" -> (ThisBuild / version).value
+          ),
         micrositeAuthor := "Niklas Klein",
-        micrositeBaseUrl := s"/${githubProject.value}",
+        micrositeBaseUrl := "",
         micrositeCompilingDocsTool := WithMdoc,
         micrositeCssDirectory := mdocIn.value / "stylesheet",
         micrositeGithubOwner := "taig",
@@ -80,11 +86,13 @@ object HouserulesPlugin extends AutoPlugin {
         micrositeFooterText := Some(
           s"<p>Built for version ${version.value} at ${Instant.now()}</p>"
         ),
+        micrositeHomepage := s"https://${githubProject.value}.taig.io",
+        micrositeName := (LocalRootProject / name).value,
         micrositeImgDirectory := mdocIn.value / "image",
         micrositeJsDirectory := mdocIn.value / "javascript",
         micrositePushSiteWith := GitHub4s,
         micrositeTwitterCreator := "@tttaig",
-        micrositeUrl := "http://taig.io"
+        micrositeUrl := "https://taig.io/"
       )
 
     val mode =
@@ -139,7 +147,7 @@ object HouserulesPlugin extends AutoPlugin {
       .flatMap(Mode.parse)
       .getOrElse(Mode.Default),
     organization := "io.taig",
-    organizationHomepage := Some(url("http://taig.io/")),
+    organizationHomepage := Some(url("https://taig.io/")),
     scalafmtGenerateConfig := {
       val file = (baseDirectory in LocalRootProject).value / ".scalafmt.conf"
       val content =
