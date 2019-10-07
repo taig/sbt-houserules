@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1
+
+_2019-10-07_
+
+ * Fix kind-projector compiler plugin dependency
+ * Upgrade to scala 2.12.10
+
 ## 0.1.0
 
 _2019-10-07_
