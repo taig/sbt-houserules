@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0
+
+_2019-10-07_
+
+ * Upgrade to sbt-sonatype 3.8
+ * Upgrade to sbt-scalafmt 2.0.6
+ * Upgrade to sbt-microsites 0.9.7
+ * Upgrade to kind-projector 0.11.0
+
 ## 0.0.9
 
 _2019-09-25_
