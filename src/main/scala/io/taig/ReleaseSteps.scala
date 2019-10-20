@@ -7,7 +7,7 @@ import sbtrelease.ReleaseStateTransformations
 import scala.language.postfixOps
 
 object ReleaseSteps {
-  val updateChangelog = ReleaseStep { state =>
+  val updateChangelog: ReleaseStep = ReleaseStep { state =>
     val extracted = Project.extract(state)
     val version = extracted.get(Keys.version)
 
@@ -26,7 +26,7 @@ object ReleaseSteps {
     state
   }
 
-  val commitNextVersion = ReleaseStep { state =>
+  val commitNextVersion: ReleaseStep = ReleaseStep { state =>
     val state1 = Project.extract(state)
     val (newState1, version) = state1.runTask(releaseTagName, state)
     val state2 = Project.extract(newState1)
@@ -35,6 +35,6 @@ object ReleaseSteps {
         Seq(releaseCommitMessage := s"Prepare $version"),
         newState1
       )
-    ReleaseStateTransformations.commitNextVersion.action(newState2)
+    ReleaseStateTransformations.commitNextVersion(newState2)
   }
 }
