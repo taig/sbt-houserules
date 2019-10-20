@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.1.1
+## 0.1.2
+
+_2019-10-20_
+
+ * Upgrade to sbt-scalafmt 2.0.7
+ * Upgrade to sbt-release 1.0.12
+ 
+ ## 0.1.1
 
 _2019-10-07_
 
