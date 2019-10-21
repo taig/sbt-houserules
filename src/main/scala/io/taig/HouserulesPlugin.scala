@@ -178,7 +178,7 @@ object HouserulesPlugin extends AutoPlugin {
       "assumeStandardLibraryStripMargin = true" ::
         "maxColumn = 80" ::
         "rewrite.rules = [sortimports]" ::
-        "version=2.0.0" ::
+        "version = 2.0.0" ::
         Nil,
     shellPrompt := { state =>
       val name = Project.extract(state).get(normalizedName)
