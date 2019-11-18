@@ -7,7 +7,7 @@ import mdoc.MdocPlugin.autoImport._
 import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
-import sbt._
+import sbt.{Def, _}
 import sbtrelease.ReleasePlugin
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import sbtrelease.ReleasePlugin.autoImport._
@@ -131,6 +131,24 @@ object HouserulesPlugin extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[_]] =
     compilerPlugins ++ releaseSettings ++ projects
 
+  override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
+    scalafmtGenerateConfig := {
+      val file = (baseDirectory in LocalRootProject).value / ".scalafmt.conf"
+      val content =
+        s"""# Auto generated scalafmt rules
+           |# Use `scalafmtRules` sbt setting to modify
+           |${scalafmtRules.value.mkString("\n")}""".stripMargin
+      IO.write(file, content)
+      file
+    },
+    scalafmtRules :=
+      "assumeStandardLibraryStripMargin = true" ::
+        "maxColumn = 80" ::
+        "rewrite.rules = [sortimports]" ::
+        "version = 2.2.1" ::
+        Nil
+  )
+
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++=
       compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0") ::
@@ -165,21 +183,6 @@ object HouserulesPlugin extends AutoPlugin {
       .getOrElse(Mode.Default),
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
-    scalafmtGenerateConfig := {
-      val file = (baseDirectory in LocalRootProject).value / ".scalafmt.conf"
-      val content =
-        s"""# Auto generated scalafmt rules
-           |# Use `scalafmtRules` sbt setting to modify
-           |${scalafmtRules.value.mkString("\n")}""".stripMargin
-      IO.write(file, content)
-      file
-    },
-    scalafmtRules :=
-      "assumeStandardLibraryStripMargin = true" ::
-        "maxColumn = 80" ::
-        "rewrite.rules = [sortimports]" ::
-        "version = 2.2.1" ::
-        Nil,
     shellPrompt := { state =>
       val name = Project.extract(state).get(normalizedName)
       s"sbt:$name> "
