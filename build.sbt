@@ -36,16 +36,16 @@ releaseTagName := version.value
 sbtPlugin := true
 
 scalafmtAll := {
-  (scalafmt in Compile)
-    .dependsOn(scalafmt in Test)
-    .dependsOn(scalafmtSbt in Compile)
+  (Compile / scalafmt)
+    .dependsOn(Test / scalafmt)
+    .dependsOn(Compile / scalafmtSbt)
     .value
 }
 
 scalafmtCheckAll := {
-  (scalafmtCheck in Compile)
-    .dependsOn(scalafmtCheck in Test)
-    .dependsOn(scalafmtSbtCheck in Compile)
+  (Compile / scalafmtCheck)
+    .dependsOn(Test / scalafmtCheck)
+    .dependsOn(Compile / scalafmtSbtCheck)
     .value
 }
 
