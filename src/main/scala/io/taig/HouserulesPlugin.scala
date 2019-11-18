@@ -6,6 +6,7 @@ import com.jsuereth.sbtpgp.SbtPgp.autoImport._
 import mdoc.MdocPlugin.autoImport._
 import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
+import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 import sbt.Keys._
 import sbt.{Def, _}
 import sbtrelease.ReleasePlugin
@@ -149,6 +150,8 @@ object HouserulesPlugin extends AutoPlugin {
         Nil
   )
 
+  override def projectConfigurations: Seq[Configuration] = Seq(IntegrationTest)
+
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++=
       compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0") ::
@@ -190,6 +193,8 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
+    Defaults.itSettings,
+    inConfig(IntegrationTest)(scalafmtConfigSettings),
     commands += Command.command("publishAndRelease") { state =>
       val validateEnv: String => Unit =
         key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
@@ -256,12 +261,14 @@ object HouserulesPlugin extends AutoPlugin {
     scalafmtAll := {
       (scalafmt in Compile)
         .dependsOn(scalafmt in Test)
+        .dependsOn(scalafmt in IntegrationTest)
         .dependsOn(scalafmtSbt in Compile)
         .value
     },
     scalafmtCheckAll := {
       (scalafmtCheck in Compile)
         .dependsOn(scalafmtCheck in Test)
+        .dependsOn(scalafmtCheck in IntegrationTest)
         .dependsOn(scalafmtSbtCheck in Compile)
         .value
     },
