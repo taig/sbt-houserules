@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.3
+
+_2019-11-18_
+
+ * Switch from sbt `in` syntax to `/` style
+ * Enable integration tests by default
+ * Move scalafmt config generation to `buildSettings`
+ * Upgrade to sbt 1.3.3
+ * Upgrade to scalafmt 2.2.1
+
 ## 0.1.2
 
 _2019-10-20_
