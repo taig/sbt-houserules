@@ -5,6 +5,7 @@ import java.time.Instant
 import com.jsuereth.sbtpgp.SbtPgp.autoImport._
 import mdoc.MdocPlugin.autoImport._
 import microsites.MicrositesPlugin.autoImport._
+import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 import sbt.Keys._
@@ -116,14 +117,12 @@ object HouserulesPlugin extends AutoPlugin {
     val mode =
       settingKey[Mode]("Execution mode, either 'tolerant' or 'strict'")
 
-    val scalafmtGenerateConfig = taskKey[File]("Generate .scalafmt.conf")
-
     val scalafmtRules = settingKey[Seq[String]]("scalafmt rules")
   }
 
   import autoImport._
 
-  override def requires: Plugins = ReleasePlugin
+  override def requires: Plugins = ReleasePlugin && ScalafmtPlugin
 
   override def trigger = allRequirements
 
@@ -133,7 +132,7 @@ object HouserulesPlugin extends AutoPlugin {
     compilerPlugins ++ releaseSettings ++ projects
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtGenerateConfig := {
+    scalafmtConfig := {
       val file = (baseDirectory in LocalRootProject).value / ".scalafmt.conf"
       val content =
         s"""# Auto generated scalafmt rules
@@ -271,8 +270,7 @@ object HouserulesPlugin extends AutoPlugin {
         .dependsOn(scalafmtCheck in IntegrationTest)
         .dependsOn(scalafmtSbtCheck in Compile)
         .value
-    },
-    scalafmtConfig := scalafmtGenerateConfig.value
+    }
   )
 
   lazy val releaseSettings: Seq[Def.Setting[_]] = Def.settings(
