@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4
+
+_2019-11-20_
+
+ * Remove `scalafmtGenerateConfig` setting
+ * Upgrade to `sbt-scoverage` 1.6.1
+
 ## 0.1.3
 
 _2019-11-18_
@@ -16,7 +23,7 @@ _2019-10-20_
 
  * Upgrade to sbt-scalafmt 2.0.7
  * Upgrade to sbt-release 1.0.12
- 
+
  ## 0.1.1
 
 _2019-10-07_
@@ -39,7 +46,7 @@ _2019-09-25_
 
  * Provide defaults for `name` and `normalizedName` in `houserulesSettings`
  * Preset useful microsite `mdoc` variables
- * Upgrade to sbt 1.3.2 
+ * Upgrade to sbt 1.3.2
 
 ## 0.0.8
 
