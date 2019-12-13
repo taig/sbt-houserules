@@ -1,13 +1,9 @@
-FROM        openjdk:8u151-jdk-alpine3.7
+FROM        adoptopenjdk/openjdk12:alpine
 
-RUN         apk update
-RUN         apk add --no-cache bash curl
+RUN         apk add --no-cache bash
 
 # Install sbt
-RUN         apk add --no-cache --virtual=build-dependencies
-RUN         curl -Ls https://git.io/sbt > /usr/local/bin/sbt && chmod 0755 /usr/local/bin/sbt
-RUN         apk del build-dependencies
-ENV         JVM_OPTS "-Xms2G -Xmx4G -Xss2M"
+RUN         wget -O /usr/local/bin/sbt https://git.io/sbt && chmod 0755 /usr/local/bin/sbt
 
 # Cache sbt
 RUN         mkdir -p \
@@ -33,4 +29,5 @@ RUN         cd ./cache/ && sbt -v test:compile
 # Clean cache
 RUN         rm -r ./cache/
 
-WORKDIR     /home/sbt-houserules/
+ENTRYPOINT  /bin/bash
+WORKDIR     /root/sbt-houserules/
