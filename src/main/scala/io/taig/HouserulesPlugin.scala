@@ -3,13 +3,14 @@ package io.taig
 import java.time.Instant
 
 import com.jsuereth.sbtpgp.SbtPgp.autoImport._
+import io.github.davidgregory084.TpolecatPlugin
 import mdoc.MdocPlugin.autoImport._
 import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 import sbt.Keys._
-import sbt.{Def, _}
+import sbt._
 import sbtrelease.ReleasePlugin
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import sbtrelease.ReleasePlugin.autoImport._
@@ -122,7 +123,8 @@ object HouserulesPlugin extends AutoPlugin {
 
   import autoImport._
 
-  override def requires: Plugins = ReleasePlugin && ScalafmtPlugin
+  override def requires: Plugins =
+    ReleasePlugin && ScalafmtPlugin && TpolecatPlugin
 
   override def trigger = allRequirements
 
@@ -213,50 +215,9 @@ object HouserulesPlugin extends AutoPlugin {
     libraryDependencies ++=
       "org.typelevel" %% "simulacrum" % "1.0.0" % "provided" ::
         Nil,
-    scalacOptions ++=
-      "-deprecation" ::
-        "-feature" ::
-        "-language:higherKinds" ::
-        "-language:implicitConversions" ::
-        "-language:postfixOps" ::
-        "-unchecked" ::
-        "-Ypatmat-exhaust-depth" :: "40" ::
-        "-Ywarn-dead-code" ::
-        "-Ywarn-value-discard" ::
-        Nil,
-    scalacOptions ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect {
-        case (2, minor) if minor >= 12 =>
-          "-Ywarn-unused:imports" ::
-            Nil
-      }
-      .getOrElse(List.empty),
-    scalacOptions ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect {
-        case (2, minor) if minor <= 12 =>
-          "-Xexperimental" ::
-            "-Ypartial-unification" ::
-            "-Ywarn-infer-any" ::
-            Nil
-      }
-      .getOrElse(List.empty),
-    scalacOptions ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect {
-        case (2, minor) if minor <= 11 =>
-          "-Ywarn-unused-import" ::
-            Nil
-      }
-      .getOrElse(List.empty),
-    scalacOptions ++= {
-      if (mode.value == Mode.Strict) List("-Xfatal-warnings") else Nil
+    scalacOptions --= {
+      if (mode.value == Mode.Tolerant) List("-Xfatal-warnings") else Nil
     },
-    scalacOptions in (Compile, console) --=
-      "-Ywarn-unused:imports" ::
-        "-Ywarn-unused-import" ::
-        Nil,
     scalafmtAll := {
       (scalafmt in Compile)
         .dependsOn(scalafmt in Test)
