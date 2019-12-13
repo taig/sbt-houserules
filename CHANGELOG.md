@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.5
+
+_2019-12-13_
+
+ * Use sbt-tpolecat for scalacOptions
+ * Upgrade to sbt-sonatype 3.8.1
+ * Upgrade to scalafmt 2.3.0
+ * Upgrade to sbt 1.3.5
+
 ## 0.1.4
 
 _2019-11-20_
