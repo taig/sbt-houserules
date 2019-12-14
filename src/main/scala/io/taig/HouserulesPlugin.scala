@@ -146,7 +146,7 @@ object HouserulesPlugin extends AutoPlugin {
     scalafmtRules :=
       "assumeStandardLibraryStripMargin = true" ::
         "maxColumn = 80" ::
-        "rewrite.rules = [sortimports]" ::
+        "rewrite.rules = [SortImports, SortModifiers]" ::
         "version = 2.3.0" ::
         Nil
   )
