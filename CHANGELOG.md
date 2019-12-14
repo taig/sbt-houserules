@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.6
+
+_2019-12-14_
+
+ * Add scalafmt SortModifiers rewrite rule
+
 ## 0.1.5
 
 _2019-12-13_
