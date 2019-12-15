@@ -1,18 +1,18 @@
 # Changelog
 
-## 0.1.6
-
-_2019-12-14_
-
- * Add scalafmt SortModifiers rewrite rule
-
 ## 0.1.7
 
 _2019-12-15_
 
  * Upgrade to sbt-microsites 1.0.2
  * Enable -Xexperimental on scala 2.11 and 2.12
- 
+
+## 0.1.6
+
+_2019-12-14_
+
+ * Add scalafmt SortModifiers rewrite rule
+
 ## 0.1.5
 
 _2019-12-13_
