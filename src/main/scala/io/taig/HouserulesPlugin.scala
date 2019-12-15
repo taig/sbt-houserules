@@ -215,6 +215,10 @@ object HouserulesPlugin extends AutoPlugin {
     libraryDependencies ++=
       "org.typelevel" %% "simulacrum" % "1.0.0" % "provided" ::
         Nil,
+    scalacOptions ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect { case (2, minor) if minor <= 12 => List("-Xexperimental") }
+      .getOrElse(List.empty),
     scalacOptions --= {
       if (mode.value == Mode.Tolerant) List("-Xfatal-warnings") else Nil
     },
