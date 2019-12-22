@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.8
+
+_2019-12-23_
+
+ * Upgrade to sbt-pgp 2.0.1
+ * Add scalacOption `-Ywarn-macros:after`
+
 ## 0.1.7
 
 _2019-12-15_
