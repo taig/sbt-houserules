@@ -160,23 +160,15 @@ object HouserulesPlugin extends AutoPlugin {
           "org.typelevel" % "kind-projector" % "0.11.0" cross CrossVersion.full
         ) ::
         Nil,
-    libraryDependencies ++=
-      CrossVersion
-        .partialVersion(scalaVersion.value)
-        .collect {
-          case (2, minor) if minor <= 12 =>
-            compilerPlugin(
-              "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full
-            )
-        }
-        .toList,
-    scalacOptions ++=
-      CrossVersion
-        .partialVersion(scalaVersion.value)
-        .collect {
-          case (2, minor) if minor >= 13 => "-Ymacro-annotations"
-        }
-        .toList
+    libraryDependencies ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect {
+        case (2, minor) if minor <= 12 =>
+          compilerPlugin(
+            "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full
+          )
+      }
+      .toList
   )
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
@@ -219,6 +211,18 @@ object HouserulesPlugin extends AutoPlugin {
       .partialVersion(scalaVersion.value)
       .collect { case (2, minor) if minor <= 12 => List("-Xexperimental") }
       .getOrElse(List.empty),
+    scalacOptions ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect {
+        case (2, minor) if minor >= 13 => "-Ymacro-annotations"
+      }
+      .toList,
+    scalacOptions ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect {
+        case (2, minor) if minor >= 12 => "-Ywarn-macros:after"
+      }
+      .toList,
     scalacOptions --= {
       if (mode.value == Mode.Tolerant) List("-Xfatal-warnings") else Nil
     },
