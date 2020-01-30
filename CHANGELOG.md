@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.9
+
+_2020-01-30_
+
+ * Upgrade to sbt-microsites 1.1.0
+ * Upgrade to sbt-release 1.0.13
+ * Upgrade to sbt-scalafmt 2.3.1
+
 ## 0.1.8
 
 _2019-12-23_
