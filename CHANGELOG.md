@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.10
+
+_2020-02-28_
+
+ * Upgrade to sbt-microsites 1.1.2
+ * Upgrade to sbt-tpolecat 0.1.11
+
 ## 0.1.9
 
 _2020-01-30_
