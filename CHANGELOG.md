@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.11
+
+_2020-03-27_
+
+ * Upgrade to scala 2.12.11
+ * Upgrade to sbt-microsites 1.1.5
+ * Upgrade to sbt-sonatype 3.9.1
+ * Upgrade to sbt-scalafmt 2.3.2
+ * Upgrade to sbt 1.3.8
+
 ## 0.1.10
 
 _2020-02-28_
