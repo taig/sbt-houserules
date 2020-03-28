@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+_2020-03-28_
+
+ * Increase scalafmt maxColumns to 120
+ * Upgrade to sbt-sonatype 3.9.2
+
 ## 0.1.11
 
 _2020-03-27_
