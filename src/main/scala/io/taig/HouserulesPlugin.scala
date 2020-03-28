@@ -44,8 +44,7 @@ object HouserulesPlugin extends AutoPlugin {
         skip in publish := true
       )
 
-    val sonatypePublishSettings
-        : Seq[Def.Setting[_]] = houserulesSettings ++ Def.settings(
+    val sonatypePublishSettings: Seq[Def.Setting[_]] = houserulesSettings ++ Def.settings(
       credentials ++= {
         (for {
           username <- sys.env.get("SONATYPE_USERNAME")
@@ -145,7 +144,7 @@ object HouserulesPlugin extends AutoPlugin {
     },
     scalafmtRules :=
       "assumeStandardLibraryStripMargin = true" ::
-        "maxColumn = 80" ::
+        "maxColumn = 120" ::
         "rewrite.rules = [SortImports, SortModifiers]" ::
         "version = 2.3.2" ::
         Nil
