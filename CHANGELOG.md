@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+_2020-03-29_
+
+ * Add sbt silencer-plugin
+
 ## 0.2.0
 
 _2020-03-28_
