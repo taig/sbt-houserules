@@ -60,9 +60,7 @@ object HouserulesPlugin extends AutoPlugin {
         url(s"https://github.com/taig/${githubProject.value.toLowerCase}")
       ),
       licenses := Seq(
-        "MIT" -> url(
-          s"https://raw.githubusercontent.com/taig/${githubProject.value.toLowerCase}/master/LICENSE"
-        )
+        "MIT" -> url(s"https://raw.githubusercontent.com/taig/${githubProject.value.toLowerCase}/master/LICENSE")
       ),
       useGpg := false,
       pgpPassphrase := sys.env
@@ -154,28 +152,23 @@ object HouserulesPlugin extends AutoPlugin {
 
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++=
-      compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0") ::
-        compilerPlugin(
-          "org.typelevel" % "kind-projector" % "0.11.0" cross CrossVersion.full
-        ) ::
+      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full) ::
+        ("com.github.ghik" % "silencer-lib" % "1.6.0" % "provided" cross CrossVersion.full) ::
+        compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0") ::
+        compilerPlugin("org.typelevel" % "kind-projector" % "0.11.0" cross CrossVersion.full) ::
         Nil,
     libraryDependencies ++= CrossVersion
       .partialVersion(scalaVersion.value)
       .collect {
         case (2, minor) if minor <= 12 =>
-          compilerPlugin(
-            "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full
-          )
+          compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
       }
       .toList
   )
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
     githubProject := (normalizedName in LocalRootProject).value,
-    mode := sys.props
-      .get("mode")
-      .flatMap(Mode.parse)
-      .getOrElse(Mode.Default),
+    mode := sys.props.get("mode").flatMap(Mode.parse).getOrElse(Mode.Default),
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
     shellPrompt := { state =>
@@ -188,8 +181,7 @@ object HouserulesPlugin extends AutoPlugin {
     Defaults.itSettings,
     inConfig(IntegrationTest)(scalafmtConfigSettings),
     commands += Command.command("publishAndRelease") { state =>
-      val validateEnv: String => Unit =
-        key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
+      val validateEnv: String => Unit = key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
 
       validateEnv("SONATYPE_USERNAME")
       validateEnv("SONATYPE_PASSWORD")
