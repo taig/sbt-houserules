@@ -239,7 +239,7 @@ object HouserulesPlugin extends AutoPlugin {
       checkSnapshotDependencies,
       releaseStepCommandAndRemaining("scalafmtCheckAll"),
       runClean,
-      runTest,
+      releaseStepCommandAndRemaining("+test"),
       inquireVersions,
       setReleaseVersion,
       ReleaseSteps.updateChangelog,
