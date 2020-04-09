@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+_2020-04-09_
+
+ * Run cross version tests in release
+ 
 ## 0.2.1
 
 _2020-03-29_
