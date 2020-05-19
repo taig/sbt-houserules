@@ -77,9 +77,7 @@ pgpSecretRing := {
   sys.env.get("PGP_SECRING").foreach(IO.write(secring, _))
   secring
 }
-pomIncludeRepository := { _ =>
-  false
-}
+pomIncludeRepository := { _ => false }
 publishArtifact in Test := false
 publishMavenStyle := true
 publishTo := sonatypePublishToBundle.value
