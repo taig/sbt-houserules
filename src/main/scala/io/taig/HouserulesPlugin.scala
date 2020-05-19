@@ -72,9 +72,7 @@ object HouserulesPlugin extends AutoPlugin {
         sys.env.get("PGP_SECRING").foreach(IO.write(secring, _))
         secring
       },
-      pomIncludeRepository := { _ =>
-        false
-      },
+      pomIncludeRepository := { _ => false },
       publishArtifact in Test := false,
       publishMavenStyle := true,
       publishTo := sonatypePublishToBundle.value,
@@ -144,7 +142,7 @@ object HouserulesPlugin extends AutoPlugin {
       "assumeStandardLibraryStripMargin = true" ::
         "maxColumn = 120" ::
         "rewrite.rules = [SortImports, SortModifiers]" ::
-        "version = 2.3.2" ::
+        "version = 2.4.0" ::
         Nil
   )
 
