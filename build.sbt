@@ -4,7 +4,7 @@ import xerial.sbt.Sonatype.GitLabHosting
 addSbtPlugin("com.47deg" % "sbt-microsites" % "1.2.1")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.0.1")
-addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.11")
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.12")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.0")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
