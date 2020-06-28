@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.3
+
+_2020-06-28_
+
+ * Remove sbt-silencer
+ * Upgrade to sbt-tpolecat 0.1.13
+ * Upgrade to sbt-sonatype 3.9.3
+ * Upgrade to scalafmt 2.4.0
+ * Upgrade to sbt-microsites 1.2.1
+
 ## 0.2.2
 
 _2020-04-09_
