@@ -150,9 +150,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++=
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full) ::
-        ("com.github.ghik" % "silencer-lib" % "1.6.0" % "provided" cross CrossVersion.full) ::
-        compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0") ::
+      compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0") ::
         compilerPlugin("org.typelevel" % "kind-projector" % "0.11.0" cross CrossVersion.full) ::
         Nil,
     libraryDependencies ++= CrossVersion
