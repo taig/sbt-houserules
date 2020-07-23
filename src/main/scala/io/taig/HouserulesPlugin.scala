@@ -118,6 +118,8 @@ object HouserulesPlugin extends AutoPlugin {
 
   import autoImport._
 
+  lazy val IntegrationTest = config("it").extend(Test)
+
   override def requires: Plugins =
     ReleasePlugin && ScalafmtPlugin && TpolecatPlugin
 
