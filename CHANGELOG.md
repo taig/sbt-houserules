@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.4
+
+_2020-07-23_
+
+ * `it` config should depend on `test` config
+ * Upgrade to scala 2.12.12
+ * Upgrade to sbt-sonatype 3.9.4
+
 ## 0.2.3
 
 _2020-06-28_
