@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+
+_2020-10-11_
+
+ * Remove automated name prefixing
+ * Upgrade to sbt-tpolecat 0.1.14
+ * Upgrade to sbt-scalafmt 2.4.2
+ * Upgrade to sbt 1.4.0
+
 ## 0.2.4
 
 _2020-07-23_
