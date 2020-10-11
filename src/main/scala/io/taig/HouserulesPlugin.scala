@@ -21,30 +21,14 @@ object HouserulesPlugin extends AutoPlugin {
   object autoImport {
     val githubProject = settingKey[String]("Github project identifier")
 
-    // Can't apply these settings automatically to a project
-    // https://gitter.im/scala-native/sbt-crossproject?at=5d8b777634a7236bf5bb6c97
-    val houserulesSettings: Seq[Def.Setting[_]] = Def.settings(
-      name := {
-        val base = (LocalRootProject / name).value.capitalize
-        val module = name.value.capitalize
-        if (base == module) base else module
-      },
-      normalizedName := {
-        val base = (LocalRootProject / normalizedName).value
-        val module = normalizedName.value
-        if (base == module) base else s"$base-$module"
-      }
+    val noPublishSettings: Seq[Def.Setting[_]] = Def.settings(
+      publish := {},
+      publishLocal := {},
+      publishArtifact := false,
+      skip in publish := true
     )
 
-    val noPublishSettings: Seq[Def.Setting[_]] = houserulesSettings ++ Def
-      .settings(
-        publish := {},
-        publishLocal := {},
-        publishArtifact := false,
-        skip in publish := true
-      )
-
-    val sonatypePublishSettings: Seq[Def.Setting[_]] = houserulesSettings ++ Def.settings(
+    val sonatypePublishSettings: Seq[Def.Setting[_]] = Def.settings(
       credentials ++= {
         (for {
           username <- sys.env.get("SONATYPE_USERNAME")
