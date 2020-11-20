@@ -4,7 +4,7 @@
 
 _2020-11-20_
 
- * Uprade to kind-projector 0.11.1
+ * Upgrade to kind-projector 0.11.1
  * Upgrade to better-monadic-for 0.3.1
  * Upgrade to sbt-tpolecat 0.1.15
  * Upgrade to sbt-sonatype 3.9.5
