@@ -1,36 +1,59 @@
 stages:
-- docker
-- test
-- publish
+  - docker
+  - cache
+  - test
+  - deploy
 
 variables:
-  CONTAINER_REGISTRY: registry.gitlab.com
-  CONTAINER_IMAGE: $CONTAINER_REGISTRY/taig-github/sbt-houserules
+  REGISTRY: registry.gitlab.com
+  IMAGE: $REGISTRY/taig-github/sbt-houserules
   DOCKER_DRIVER: overlay2
+  SBT: sbt -v -sbt-launch-dir ./cache/launchers -Dsbt.global.base=./cache/sbt -Dsbt.boot.directory=./cache/boot -Dsbt.ivy.home=./cache/ivy -Dsbt.coursier.home=./cache/coursier -Dmode=strict
+
+cache: &cache
+  key: global
+  paths:
+    - ./cache/
+    - ./**/target/
+  policy: pull
 
 docker:
   stage: docker
   image: docker
   services:
-  - docker:dind
+    - docker:dind
   script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CONTAINER_REGISTRY
-  - docker pull $CONTAINER_IMAGE:latest || true
-  - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_BUILD_REF_NAME .
-  - docker push $CONTAINER_IMAGE
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $REGISTRY
+    - docker pull $IMAGE:latest || true
+    - docker build --cache-from $IMAGE:latest --tag $IMAGE:latest .
+    - docker push $IMAGE
+  cache: {}
 
-test:
+dependencies:
+  stage: cache
+  image: $IMAGE:latest
+  script: $SBT compile
+  cache:
+    <<: *cache
+    policy: pull-push
+
+code formatting:
   stage: test
-  image: $CONTAINER_IMAGE:$CI_BUILD_REF_NAME
-  script:
-  - sbt -Dmode=strict scalafmtCheckAll
-  - sbt -Dmode=strict publishLocal
+  image: $IMAGE:latest
+  script: $SBT scalafmtCheckAll
+  except:
+    - tags
+
+test suite:
+  stage: test
+  image: $IMAGE:latest
+  script: $SBT publishLocal
 
 publish:
   stage: publish
-  image: $CONTAINER_IMAGE:$CI_BUILD_REF_NAME
+  image: $IMAGE:latest
   only:
-  - master
-  - tags
+    - master
+    - tags
   script:
-  - sbt publishAndRelease
+    - $SBT publishAndRelease
