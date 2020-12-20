@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.2
+
+_2020-12-20_
+
+ * Upgrade to scalafmt 2.7.5
+ * Upgrade to sbt-tpolecat 0.1.16
+ * Upgrade to sbt-gpg 2.1.1
+ * Upgrade to kind-projector 0.11.2
+ * Upgrade to sbt 1.4.5
+ * Switch to gitlab ci caching
+
 ## 0.3.1
 
 _2020-11-20_
