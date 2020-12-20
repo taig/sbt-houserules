@@ -128,7 +128,7 @@ object HouserulesPlugin extends AutoPlugin {
       "assumeStandardLibraryStripMargin = true" ::
         "maxColumn = 120" ::
         "rewrite.rules = [SortImports, SortModifiers]" ::
-        "version = 2.4.2" ::
+        "version = 2.7.5" ::
         Nil
   )
 
