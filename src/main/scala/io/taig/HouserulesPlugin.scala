@@ -137,7 +137,7 @@ object HouserulesPlugin extends AutoPlugin {
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++=
       compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
-        compilerPlugin("org.typelevel" % "kind-projector" % "0.11.1" cross CrossVersion.full) ::
+        compilerPlugin("org.typelevel" % "kind-projector" % "0.11.2" cross CrossVersion.full) ::
         Nil,
     libraryDependencies ++= CrossVersion
       .partialVersion(scalaVersion.value)
