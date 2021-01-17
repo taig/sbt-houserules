@@ -1,11 +1,7 @@
 package io.taig
 
-import java.time.Instant
-
 import com.jsuereth.sbtpgp.SbtPgp.autoImport._
 import io.github.davidgregory084.TpolecatPlugin
-import mdoc.MdocPlugin.autoImport._
-import microsites.MicrositesPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
@@ -66,36 +62,7 @@ object HouserulesPlugin extends AutoPlugin {
       sonatypeProfileName := "io.taig"
     )
 
-    val micrositeSettings: Seq[Def.Setting[_]] =
-      noPublishSettings ++ Def.settings(
-        mdocVariables ++=
-          Map(
-            "NAME" -> (LocalRootProject / name).value,
-            "ORGANIZATION" -> (LocalRootProject / organization).value,
-            "VERSION" -> (ThisBuild / version).value
-          ),
-        micrositeAuthor := "Niklas Klein",
-        micrositeBaseUrl := "",
-        micrositeCompilingDocsTool := WithMdoc,
-        micrositeCssDirectory := mdocIn.value / "stylesheet",
-        micrositeGithubOwner := "taig",
-        micrositeGithubRepo := githubProject.value,
-        micrositeGithubToken := Option(System.getenv("GITHUB_TOKEN")),
-        micrositeGitterChannel := false,
-        micrositeFooterText := Some(
-          s"<p>Built for version ${version.value} at ${Instant.now()}</p>"
-        ),
-        micrositeHomepage := s"https://${githubProject.value}.taig.io",
-        micrositeName := (LocalRootProject / name).value,
-        micrositeImgDirectory := mdocIn.value / "image",
-        micrositeJsDirectory := mdocIn.value / "javascript",
-        micrositePushSiteWith := GitHub4s,
-        micrositeTwitterCreator := "@tttaig",
-        micrositeUrl := "https://taig.io/"
-      )
-
-    val mode =
-      settingKey[Mode]("Execution mode, either 'tolerant' or 'strict'")
+    val mode = settingKey[Mode]("Execution mode, either 'tolerant' or 'strict'")
 
     val scalafmtRules = settingKey[Seq[String]]("scalafmt rules")
   }
