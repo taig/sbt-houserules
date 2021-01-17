@@ -36,9 +36,7 @@ object HouserulesPlugin extends AutoPlugin {
           password
         )).toList
       },
-      homepage := Some(
-        url(s"https://github.com/taig/${githubProject.value.toLowerCase}")
-      ),
+      homepage := Some(url(s"https://github.com/taig/${githubProject.value.toLowerCase}")),
       licenses := Seq(
         "MIT" -> url(s"https://raw.githubusercontent.com/taig/${githubProject.value.toLowerCase}/master/LICENSE")
       ),
@@ -56,9 +54,7 @@ object HouserulesPlugin extends AutoPlugin {
       publishArtifact in Test := false,
       publishMavenStyle := true,
       publishTo := sonatypePublishToBundle.value,
-      sonatypeProjectHosting := Some(
-        GitLabHosting("taig", githubProject.value, "mail@taig.io")
-      ),
+      sonatypeProjectHosting := Some(GitLabHosting("taig", githubProject.value, "mail@taig.io")),
       sonatypeProfileName := "io.taig"
     )
 
@@ -71,8 +67,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   lazy val IntegrationTest = config("it").extend(Test)
 
-  override def requires: Plugins =
-    ReleasePlugin && ScalafmtPlugin && TpolecatPlugin
+  override def requires: Plugins = ReleasePlugin && ScalafmtPlugin && TpolecatPlugin
 
   override def trigger = allRequirements
 
@@ -130,7 +125,7 @@ object HouserulesPlugin extends AutoPlugin {
     Defaults.itSettings,
     inConfig(IntegrationTest)(scalafmtConfigSettings),
     commands += Command.command("publishAndRelease") { state =>
-      val validateEnv: String => Unit = key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
+      val validateEnv: String => Unit = key => if (!sys.env.contains(key)) sys.error(s"$$$key is not defined")
 
       validateEnv("SONATYPE_USERNAME")
       validateEnv("SONATYPE_PASSWORD")
@@ -153,15 +148,11 @@ object HouserulesPlugin extends AutoPlugin {
       .getOrElse(List.empty),
     scalacOptions ++= CrossVersion
       .partialVersion(scalaVersion.value)
-      .collect {
-        case (2, minor) if minor >= 13 => "-Ymacro-annotations"
-      }
+      .collect { case (2, minor) if minor >= 13 => "-Ymacro-annotations" }
       .toList,
     scalacOptions ++= CrossVersion
       .partialVersion(scalaVersion.value)
-      .collect {
-        case (2, minor) if minor >= 12 => "-Ywarn-macros:after"
-      }
+      .collect { case (2, minor) if minor >= 12 => "-Ywarn-macros:after" }
       .toList,
     scalacOptions --= {
       if (mode.value == Mode.Tolerant) List("-Xfatal-warnings") else Nil
