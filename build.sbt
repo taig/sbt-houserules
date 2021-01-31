@@ -49,6 +49,8 @@ scalafmtCheckAll := {
     .value
 }
 
+scalaVersion := "2.12.13"
+
 credentials ++= {
   (for {
     username <- sys.env.get("SONATYPE_USERNAME")
