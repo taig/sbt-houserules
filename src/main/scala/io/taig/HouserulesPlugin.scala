@@ -142,9 +142,10 @@ object HouserulesPlugin extends AutoPlugin {
         "+publishSigned" :: "sonatypeBundleRelease" :: state
       }
     },
-    libraryDependencies ++=
-      "org.typelevel" %% "simulacrum" % "1.0.0" % "provided" ::
-        Nil,
+    libraryDependencies ++= CrossVersion
+      .partialVersion(scalaVersion.value)
+      .collect { case (2, _) => "org.typelevel" %% "simulacrum" % "1.0.0" % "provided" }
+      .toList,
     scalacOptions ++= CrossVersion
       .partialVersion(scalaVersion.value)
       .collect { case (2, minor) if minor <= 12 => List("-Xexperimental") }
