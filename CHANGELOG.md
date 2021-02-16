@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.3
+
+_2021-02-16_
+
+ * Only load plugins on scala 2
+ * Upgrade to kind-projector 0.11.3
+ * Upgrade to sbt 1.4.7
+ * Upgrade to scala 2.12.13
+ * Remove sbt-microsites
+
 ## 0.3.2
 
 _2020-12-20_
