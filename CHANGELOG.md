@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4
+
+_2021-02-16_
+
+ * Only load simulacrum on scala 2
+
 ## 0.3.3
 
 _2021-02-16_
