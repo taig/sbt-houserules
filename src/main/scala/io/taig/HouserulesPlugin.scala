@@ -97,21 +97,24 @@ object HouserulesPlugin extends AutoPlugin {
   override def projectConfigurations: Seq[Configuration] = Seq(IntegrationTest)
 
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
-    libraryDependencies ++=
-      compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
-        compilerPlugin("org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full) ::
-        Nil,
     libraryDependencies ++= CrossVersion
       .partialVersion(scalaVersion.value)
       .collect {
-        case (2, minor) if minor <= 12 =>
-          compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+        case (2, minor) =>
+          val plugins = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
+            compilerPlugin("org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full) ::
+            Nil
+
+          val paradise = compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+
+          if (minor <= 12) paradise :: plugins else plugins
       }
       .toList
+      .flatten
   )
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
-    githubProject := (normalizedName in LocalRootProject).value,
+    githubProject := (LocalRootProject / normalizedName).value,
     mode := sys.props.get("mode").flatMap(Mode.parse).getOrElse(Mode.Default),
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
