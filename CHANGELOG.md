@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.5
+
+_2021-03-05_
+
+ * Upgrade to simulacrum 1.0.1
+ * Change sbt-pgp organization to com.github.sbt
+
 ## 0.3.4
 
 _2021-02-16_
