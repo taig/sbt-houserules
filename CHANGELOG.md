@@ -4,6 +4,13 @@
 
 _2021-03-05_
 
+ * Upgrade to sbt 1.5.0-M2
+ * Upgrade to sbt-release 1.0.15
+
+## 0.3.5
+
+_2021-03-05_
+
  * Upgrade to simulacrum 1.0.1
  * Change sbt-pgp organization to com.github.sbt
 
