@@ -144,7 +144,7 @@ object HouserulesPlugin extends AutoPlugin {
     },
     libraryDependencies ++= CrossVersion
       .partialVersion(scalaVersion.value)
-      .collect { case (2, _) => "org.typelevel" %% "simulacrum" % "1.0.0" % "provided" }
+      .collect { case (2, _) => "org.typelevel" %% "simulacrum" % "1.0.1" % "provided" }
       .toList,
     scalacOptions ++= CrossVersion
       .partialVersion(scalaVersion.value)
