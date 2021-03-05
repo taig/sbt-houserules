@@ -79,12 +79,10 @@ pgpSecretRing := {
   secring
 }
 pomIncludeRepository := { _ => false }
-publishArtifact in Test := false
+Test / publishArtifact := false
 publishMavenStyle := true
 publishTo := sonatypePublishToBundle.value
-sonatypeProjectHosting := Some(
-  GitLabHosting("taig", "sbt-houserules", "mail@taig.io")
-)
+sonatypeProjectHosting := Some(GitLabHosting("taig", "sbt-houserules", "mail@taig.io"))
 sonatypeProfileName := "io.taig"
 commands += Command.command("publishAndRelease") { state =>
   val validateEnv: String => Unit =

@@ -21,7 +21,7 @@ object HouserulesPlugin extends AutoPlugin {
       publish := {},
       publishLocal := {},
       publishArtifact := false,
-      skip in publish := true
+      publish / skip := true
     )
 
     val sonatypePublishSettings: Seq[Def.Setting[_]] = Def.settings(
@@ -51,7 +51,7 @@ object HouserulesPlugin extends AutoPlugin {
         secring
       },
       pomIncludeRepository := { _ => false },
-      publishArtifact in Test := false,
+      Test / publishArtifact := false,
       publishMavenStyle := true,
       publishTo := sonatypePublishToBundle.value,
       sonatypeProjectHosting := Some(GitLabHosting("taig", githubProject.value, "mail@taig.io")),
@@ -78,7 +78,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafmtConfig := {
-      val file = (baseDirectory in LocalRootProject).value / ".scalafmt.conf"
+      val file = (LocalRootProject / baseDirectory).value / ".scalafmt.conf"
       val content =
         s"""# Auto generated scalafmt rules
            |# Use `scalafmtRules` sbt setting to modify
@@ -162,17 +162,17 @@ object HouserulesPlugin extends AutoPlugin {
       if (mode.value == Mode.Tolerant) List("-Xfatal-warnings") else Nil
     },
     scalafmtAll := {
-      (scalafmt in Compile)
-        .dependsOn(scalafmt in Test)
-        .dependsOn(scalafmt in IntegrationTest)
-        .dependsOn(scalafmtSbt in Compile)
+      (Compile / scalafmt)
+        .dependsOn(Test / scalafmt)
+        .dependsOn(IntegrationTest / scalafmt)
+        .dependsOn(Compile / scalafmtSbt)
         .value
     },
     scalafmtCheckAll := {
-      (scalafmtCheck in Compile)
-        .dependsOn(scalafmtCheck in Test)
-        .dependsOn(scalafmtCheck in IntegrationTest)
-        .dependsOn(scalafmtSbtCheck in Compile)
+      (Compile / scalafmtCheck)
+        .dependsOn(Test / scalafmtCheck)
+        .dependsOn(IntegrationTest / scalafmtCheck)
+        .dependsOn(Compile / scalafmtSbtCheck)
         .value
     }
   )
