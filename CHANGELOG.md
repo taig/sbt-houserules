@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.6
+
+_2021-04-29_
+
+ * Upgrade to sbt-scoverage 1.7.0
+ * Upgrade to sbt-sonatype 3.9.7
+ * Upgrade to sbt-tpolecat 0.1.17
+ * Upgrade to sbt 1.5.1
+
 ## 0.3.5
 
 _2021-03-05_
