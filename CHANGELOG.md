@@ -1,6 +1,14 @@
 # Changelog
 
-## 0.3.6
+## 0.3.8
+
+_2021-05-14_
+
+ * Upgrade to kind-projector 0.12.0
+ * Upgrade to sbt-scoverage 1.8.0
+ * Upgrade to sbt 1.5.2
+
+## 0.3.7
 
 _2021-04-29_
 
@@ -9,7 +17,7 @@ _2021-04-29_
  * Upgrade to sbt-tpolecat 0.1.17
  * Upgrade to sbt 1.5.1
 
-## 0.3.5
+## 0.3.6
 
 _2021-03-05_
 
