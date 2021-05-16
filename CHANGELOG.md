@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.9
+
+_2021-05-16_
+
+* Upgrade to kind-projector 0.13.0
+
 ## 0.3.8
 
 _2021-05-14_
