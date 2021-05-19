@@ -1,10 +1,16 @@
 # Changelog
 
+## 0.3.10
+
+_2021-05-19_
+
+* Upgrade to sbt-scoverage 1.8.1
+
 ## 0.3.9
 
 _2021-05-16_
 
-* Upgrade to kind-projector 0.13.0
+ * Upgrade to kind-projector 0.13.0
 
 ## 0.3.8
 
