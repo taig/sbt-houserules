@@ -6,6 +6,21 @@ _2021-05-19_
 
 * Upgrade to sbt-scoverage 1.8.1
 
+## 0.3.11
+
+_2021-06-02_
+
+ * Upgrade to scala 2.12.14
+ * Upgrade to sbt-scoverage 1.8.2
+ * Upgrade to sbt-tpolecat 0.1.20
+ * Upgrade to sbt 1.5.3
+
+## 0.3.10
+
+_2021-05-19_
+
+* Upgrade to sbt-scoverage 1.8.1
+
 ## 0.3.9
 
 _2021-05-16_
