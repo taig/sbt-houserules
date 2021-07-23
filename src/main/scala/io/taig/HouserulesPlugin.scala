@@ -90,7 +90,7 @@ object HouserulesPlugin extends AutoPlugin {
       "assumeStandardLibraryStripMargin = true" ::
         "maxColumn = 120" ::
         "rewrite.rules = [SortImports, SortModifiers]" ::
-        "version = 2.7.5" ::
+        "version = 3.0.0-RC6" ::
         Nil
   )
 
@@ -99,15 +99,14 @@ object HouserulesPlugin extends AutoPlugin {
   lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
     libraryDependencies ++= CrossVersion
       .partialVersion(scalaVersion.value)
-      .collect {
-        case (2, minor) =>
-          val plugins = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
-            compilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full) ::
-            Nil
+      .collect { case (2, minor) =>
+        val plugins = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
+          compilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full) ::
+          Nil
 
-          val paradise = compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+        val paradise = compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
-          if (minor <= 12) paradise :: plugins else plugins
+        if (minor <= 12) paradise :: plugins else plugins
       }
       .toList
       .flatten
