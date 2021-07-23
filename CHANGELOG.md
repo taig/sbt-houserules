@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.12
+
+_2021-07-23_
+
+ * Upgrade to scalafmt 3.0.0-RC6
+ * Upgrade to sbt-scalafmt 2.4.3
+ * Upgrade to sbt 1.5.5
+ * Upgrade to sbt-release 1.1.0
+
+## 0.3.11
+
+ * Upgrade to scala 2.12.14
+ * Upgrade to sbt-scoverage 1.8.2
+ * Upgrade to sbt-tpolecat 0.1.20
+ * Upgrade to sbt 1.5.3
+
 ## 0.3.10
 
 _2021-05-19_
