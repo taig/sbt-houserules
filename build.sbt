@@ -2,7 +2,7 @@ import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 import xerial.sbt.Sonatype.GitLabHosting
 
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.1.1")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.1.2")
 addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.20")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.3")
