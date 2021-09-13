@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.13
+
+_2021-09-13_
+
+ * Upgrade to scalafmt 3.0.3
+ * Upgrade to sbt-sonatype 3.9.10
+ * Upgrade to sbt-pgp 2.1.2
+ * Upgrade to sbt-sonatype 3.9.9
+
 ## 0.3.12
 
 _2021-07-23_
