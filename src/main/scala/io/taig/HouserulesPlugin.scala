@@ -89,8 +89,16 @@ object HouserulesPlugin extends AutoPlugin {
     scalafmtRules :=
       "assumeStandardLibraryStripMargin = true" ::
         "maxColumn = 120" ::
-        "rewrite.rules = [SortImports, SortModifiers]" ::
-        "version = 3.0.0-RC6" ::
+        "rewrite.rules = [Imports, SortModifiers]" ::
+        "rewrite.imports.sort = original" ::
+        "version = 3.0.3" ::
+        "runner.dialect = " + (CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, 11)) => "scala211"
+          case Some((2, 12)) => "scala212"
+          case Some((2, 13)) => "scala213"
+          case Some((3, _))  => "scala3"
+          case _             => "default"
+        }) ::
         Nil
   )
 
