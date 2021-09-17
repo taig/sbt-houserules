@@ -109,7 +109,7 @@ object HouserulesPlugin extends AutoPlugin {
       .partialVersion(scalaVersion.value)
       .collect { case (2, minor) =>
         val plugins = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
-          compilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full) ::
+          compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full) ::
           Nil
 
         val paradise = compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
