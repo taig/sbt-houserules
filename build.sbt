@@ -49,7 +49,7 @@ scalafmtCheckAll := {
     .value
 }
 
-scalaVersion := "2.12.14"
+scalaVersion := "2.12.15"
 
 credentials ++= {
   (for {
