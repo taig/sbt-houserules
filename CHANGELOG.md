@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.14
+
+_2021-09-17_
+
+ * Upgrade to sbt-scoverage 1.9.0
+ * Upgrade to scala 2.12.15
+ * Upgrade to kind-projector 0.13.2
+
 ## 0.3.13
 
 _2021-09-13_
