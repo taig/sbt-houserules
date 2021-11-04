@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.15
+
+_2021-11-04_
+
+ * Upgrade to scalafmt 3.0.8
+ * Upgrade to sbt-scoverage 1.9.2
+
 ## 0.3.14
 
 _2021-09-17_
