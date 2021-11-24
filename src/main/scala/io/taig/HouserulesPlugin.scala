@@ -91,7 +91,7 @@ object HouserulesPlugin extends AutoPlugin {
         "maxColumn = 120" ::
         "rewrite.rules = [Imports, SortModifiers]" ::
         "rewrite.imports.sort = original" ::
-        "version = 3.0.8" ::
+        "version = 3.1.2" ::
         "runner.dialect = " + (CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((2, 11)) => "scala211"
           case Some((2, 12)) => "scala212"
