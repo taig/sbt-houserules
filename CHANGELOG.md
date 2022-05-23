@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.23
+
+_2022-05-23_
+
+ * Upgrade scalafmt to 3.5.4
+ * Upgrade to sbt-tpolecat 0.3.1
+
 ## 0.3.22
 
 _2022-04-17_
