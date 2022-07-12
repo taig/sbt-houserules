@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.24
+
+_2022-07-12_
+
+ * Upgrade to sbt 1.7.1
+ * Upgrade to sbt-scalafmt 3.5.8
+ * Upgrade to sbt-scoverage 2.0.0
+ * Upgrade to sbt-sonatype 3.9.13
+ * Upgrade to sbt-tpolecat 0.3.3
+
 ## 0.3.23
 
 _2022-05-23_
