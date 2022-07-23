@@ -1,10 +1,17 @@
 # Changelog
 
+## 0.3.26
+
+_2022-07-23_
+
+ * Remove mode in favor of new sbt-tpolecat modes
+ * Upgrade to sbt-tpolecat 0.4.1
+
 ## 0.3.25
 
 _2022-07-21_
 
-* Upgrade to sbt-tpolecat 0.4.0
+ * Upgrade to sbt-tpolecat 0.4.0
 
 ## 0.3.24
 
