@@ -1,7 +1,8 @@
 package io.taig
 
 import com.jsuereth.sbtpgp.SbtPgp.autoImport._
-import io.github.davidgregory084.TpolecatPlugin
+import io.github.davidgregory084._
+import io.github.davidgregory084.TpolecatPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
@@ -57,8 +58,6 @@ object HouserulesPlugin extends AutoPlugin {
       sonatypeProjectHosting := Some(GitLabHosting("taig", githubProject.value, "mail@taig.io")),
       sonatypeProfileName := "io.taig"
     )
-
-    val mode = settingKey[Mode]("Execution mode, either 'tolerant' or 'strict'")
 
     val scalafmtRules = settingKey[Seq[String]]("scalafmt rules")
   }
@@ -122,7 +121,17 @@ object HouserulesPlugin extends AutoPlugin {
 
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
     githubProject := (LocalRootProject / normalizedName).value,
-    mode := sys.props.get("mode").flatMap(Mode.parse).getOrElse(Mode.Default),
+    tpolecatDefaultOptionsMode := {
+      sys.props
+        .get("mode")
+        .map {
+          case "ci"      => CiMode
+          case "dev"     => DevMode
+          case "release" => ReleaseMode
+          case mode      => sys.error(s"Unknown mode '$mode'. Must be one of: ci | dev | release")
+        }
+        .getOrElse(DevMode)
+    },
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
     shellPrompt := { state =>
@@ -165,9 +174,6 @@ object HouserulesPlugin extends AutoPlugin {
       .partialVersion(scalaVersion.value)
       .collect { case (2, minor) if minor >= 12 => "-Ywarn-macros:after" }
       .toList,
-    scalacOptions --= {
-      if (mode.value == Mode.Tolerant) List("-Xfatal-warnings") else Nil
-    },
     scalafmtAll := {
       (Compile / scalafmt)
         .dependsOn(Test / scalafmt)
