@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+_2022-08-04_
+
+* Move tpolecatDefaultOptionsMode to project settings
+* Upgrade to sbt-scoverage 2.0.1
+
 ## 0.3.26
 
 _2022-07-23_
