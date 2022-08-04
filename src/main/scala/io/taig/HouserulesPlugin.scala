@@ -181,13 +181,13 @@ object HouserulesPlugin extends AutoPlugin {
       sys.props
         .get("mode")
         .map {
-          case "ci" => CiMode
-          case "dev" => DevMode
+          case "ci"      => CiMode
+          case "dev"     => DevMode
           case "release" => ReleaseMode
-          case mode => sys.error(s"Unknown mode '$mode'. Must be one of: ci | dev | release")
+          case mode      => sys.error(s"Unknown mode '$mode'. Must be one of: ci | dev | release")
         }
         .getOrElse(DevMode)
-    },
+    }
   )
 
   lazy val releaseSettings: Seq[Def.Setting[_]] = Def.settings(
