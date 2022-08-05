@@ -98,7 +98,18 @@ object HouserulesPlugin extends AutoPlugin {
           case Some((3, _))  => "scala3"
           case _             => "default"
         }) ::
-        Nil
+        Nil,
+    tpolecatDefaultOptionsMode := {
+      sys.props
+        .get("mode")
+        .map {
+          case "ci"      => CiMode
+          case "dev"     => DevMode
+          case "release" => ReleaseMode
+          case mode      => sys.error(s"Unknown mode '$mode'. Must be one of: ci | dev | release")
+        }
+        .getOrElse(DevMode)
+    }
   )
 
   override def projectConfigurations: Seq[Configuration] = Seq(IntegrationTest)
@@ -176,17 +187,6 @@ object HouserulesPlugin extends AutoPlugin {
         .dependsOn(IntegrationTest / scalafmtCheck)
         .dependsOn(Compile / scalafmtSbtCheck)
         .value
-    },
-    tpolecatDefaultOptionsMode := {
-      sys.props
-        .get("mode")
-        .map {
-          case "ci"      => CiMode
-          case "dev"     => DevMode
-          case "release" => ReleaseMode
-          case mode      => sys.error(s"Unknown mode '$mode'. Must be one of: ci | dev | release")
-        }
-        .getOrElse(DevMode)
     }
   )
 
