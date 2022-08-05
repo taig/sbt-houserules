@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+_2022-08-05_
+
+* Finding the right scope for `tpolecatDefaultOptionsMode`
+
 ## 0.4.0
 
 _2022-08-04_
