@@ -1,5 +1,16 @@
-import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
-import xerial.sbt.Sonatype.GitLabHosting
+enablePlugins(BlowoutYamlPlugin)
+
+inThisBuild(
+  Def.settings(
+    developers := List(Developer("taig", "Niklas Klein", "mail@taig.io", url("https://taig.io/"))),
+    dynverVTagPrefix := false,
+    homepage := Some(url("https://github.com/taig/sbt-houserules/")),
+    licenses := List("MIT" -> url("https://raw.githubusercontent.com/taig/sbt-houserules/main/LICENSE")),
+    organization := "io.taig",
+    organizationHomepage := Some(url("https://taig.io/")),
+    versionScheme := Some("early-semver")
+  )
+)
 
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
@@ -9,29 +20,16 @@ addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.6")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.0.1")
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.13")
 
+blowoutGenerators ++= {
+  val workflows = file(".github") / "workflows"
+  BlowoutYamlGenerator.lzy(workflows / "main.yml", GitHubActionsGenerator.main) ::
+    BlowoutYamlGenerator.lzy(workflows / "branches.yml", GitHubActionsGenerator.branches) ::
+    Nil
+}
+
 name := "sbt-houserules"
 
 organization := "io.taig"
-
-releaseCommitMessage := s"Release ${releaseTagName.value}"
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  releaseStepCommandAndRemaining("scalafmtCheckAll"),
-  runClean,
-  inquireVersions,
-  setReleaseVersion,
-  ReleaseSteps.updateChangelog,
-  commitReleaseVersion,
-  tagRelease,
-  setNextVersion,
-  ReleaseSteps.commitNextVersion,
-  pushChanges
-)
-
-releaseTagComment := s"Release ${releaseTagName.value}"
-
-releaseTagName := version.value
 
 sbtPlugin := true
 
@@ -62,12 +60,6 @@ credentials ++= {
     password
   )).toList
 }
-homepage := Some(url(s"https://github.com/taig/sbt-houserules"))
-licenses := Seq(
-  "MIT" -> url(
-    s"https://raw.githubusercontent.com/taig/sbt-houserules/master/LICENSE"
-  )
-)
 useGpg := false
 pgpPassphrase := sys.env
   .get("PGP_PASSWORD")
@@ -78,12 +70,7 @@ pgpSecretRing := {
   sys.env.get("PGP_SECRING").foreach(IO.write(secring, _))
   secring
 }
-pomIncludeRepository := { _ => false }
-Test / publishArtifact := false
-publishMavenStyle := true
-publishTo := sonatypePublishToBundle.value
-sonatypeProjectHosting := Some(GitLabHosting("taig", "sbt-houserules", "mail@taig.io"))
-sonatypeProfileName := "io.taig"
+
 commands += Command.command("publishAndRelease") { state =>
   val validateEnv: String => Unit =
     key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
