@@ -1,5 +1,3 @@
-enablePlugins(BlowoutYamlPlugin)
-
 inThisBuild(
   Def.settings(
     developers := List(Developer("taig", "Niklas Klein", "mail@taig.io", url("https://taig.io/"))),
@@ -11,6 +9,8 @@ inThisBuild(
     versionScheme := Some("early-semver")
   )
 )
+
+enablePlugins(SbtPlugin, BlowoutYamlPlugin)
 
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
@@ -29,10 +29,6 @@ blowoutGenerators ++= {
 
 name := "sbt-houserules"
 
-organization := "io.taig"
-
-sbtPlugin := true
-
 scalafmtAll := {
   (Compile / scalafmt)
     .dependsOn(Test / scalafmt)
@@ -48,42 +44,3 @@ scalafmtCheckAll := {
 }
 
 scalaVersion := "2.12.15"
-
-credentials ++= {
-  (for {
-    username <- sys.env.get("SONATYPE_USERNAME")
-    password <- sys.env.get("SONATYPE_PASSWORD")
-  } yield Credentials(
-    "Sonatype Nexus Repository Manager",
-    "oss.sonatype.org",
-    username,
-    password
-  )).toList
-}
-useGpg := false
-pgpPassphrase := sys.env
-  .get("PGP_PASSWORD")
-  .fold(Array.empty[Char])(_.toCharArray)
-  .some
-pgpSecretRing := {
-  val secring = file("/tmp/secring.asc")
-  sys.env.get("PGP_SECRING").foreach(IO.write(secring, _))
-  secring
-}
-
-commands += Command.command("publishAndRelease") { state =>
-  val validateEnv: String => Unit =
-    key => if (sys.env.get(key).isEmpty) sys.error(s"$$$key is not defined")
-
-  validateEnv("SONATYPE_USERNAME")
-  validateEnv("SONATYPE_PASSWORD")
-
-  val snapshot: Boolean = Project.extract(state).get(isSnapshot)
-
-  if (snapshot) "+publishSigned" :: state
-  else {
-    validateEnv("PGP_SECRING")
-    validateEnv("PGP_PASSWORD")
-    "+publishSigned" :: "sonatypeBundleRelease" :: state
-  }
-}
