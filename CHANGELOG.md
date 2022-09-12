@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0
+
+_2022_09-12_
+
+* Remove release helpers in favor of sbt-ci-release
+* Upgrade to scalafmt 3.5.9
+* Upgrade to sbt-scoverage to 2.0.2
+* Upgrade to scala 2.12.16
+
 ## 0.4.2
 
 _2022_09-12_
