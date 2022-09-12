@@ -1,10 +1,6 @@
 val Version = new {
-  val SbtPgp = "2.1.2"
-  val SbtRelease = "1.1.0"
-  val SbtRevolver = "0.9.1"
   val SbtScalafmt = "2.4.6"
   val SbtScoverage = "2.0.2"
-  val SbtSonatype = "3.9.13"
   val SbtTpolecat = "0.4.1"
   val Scala = "2.12.16"
 }
@@ -23,13 +19,9 @@ inThisBuild(
 
 enablePlugins(SbtPlugin, BlowoutYamlPlugin)
 
-addSbtPlugin("com.github.sbt" % "sbt-release" % Version.SbtRelease)
-addSbtPlugin("com.github.sbt" % "sbt-pgp" % Version.SbtPgp)
 addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % Version.SbtTpolecat)
-addSbtPlugin("io.spray" % "sbt-revolver" % Version.SbtRevolver)
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % Version.SbtScalafmt)
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % Version.SbtScoverage)
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % Version.SbtSonatype)
 
 blowoutGenerators ++= {
   val workflows = file(".github") / "workflows"

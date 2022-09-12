@@ -1,6 +1,5 @@
 package io.taig
 
-import com.jsuereth.sbtpgp.SbtPgp.autoImport._
 import io.github.davidgregory084._
 import io.github.davidgregory084.TpolecatPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
@@ -8,11 +7,6 @@ import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 import sbt.Keys._
 import sbt._
-import sbtrelease.ReleasePlugin
-import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
-import sbtrelease.ReleasePlugin.autoImport._
-import xerial.sbt.Sonatype.GitLabHosting
-import xerial.sbt.Sonatype.autoImport._
 
 object HouserulesPlugin extends AutoPlugin {
   object autoImport {
@@ -25,40 +19,6 @@ object HouserulesPlugin extends AutoPlugin {
       publish / skip := true
     )
 
-    val sonatypePublishSettings: Seq[Def.Setting[_]] = Def.settings(
-      credentials ++= {
-        (for {
-          username <- sys.env.get("SONATYPE_USERNAME")
-          password <- sys.env.get("SONATYPE_PASSWORD")
-        } yield Credentials(
-          "Sonatype Nexus Repository Manager",
-          "oss.sonatype.org",
-          username,
-          password
-        )).toList
-      },
-      homepage := Some(url(s"https://github.com/taig/${githubProject.value.toLowerCase}")),
-      licenses := Seq(
-        "MIT" -> url(s"https://raw.githubusercontent.com/taig/${githubProject.value.toLowerCase}/master/LICENSE")
-      ),
-      useGpg := false,
-      pgpPassphrase := sys.env
-        .get("PGP_PASSWORD")
-        .fold(Array.empty[Char])(_.toCharArray)
-        .some,
-      pgpSecretRing := {
-        val secring = file("/tmp/secring.asc")
-        sys.env.get("PGP_SECRING").foreach(IO.write(secring, _))
-        secring
-      },
-      pomIncludeRepository := { _ => false },
-      Test / publishArtifact := false,
-      publishMavenStyle := true,
-      publishTo := sonatypePublishToBundle.value,
-      sonatypeProjectHosting := Some(GitLabHosting("taig", githubProject.value, "mail@taig.io")),
-      sonatypeProfileName := "io.taig"
-    )
-
     val scalafmtRules = settingKey[Seq[String]]("scalafmt rules")
   }
 
@@ -66,14 +26,13 @@ object HouserulesPlugin extends AutoPlugin {
 
   lazy val IntegrationTest = config("it").extend(Test)
 
-  override def requires: Plugins = ReleasePlugin && ScalafmtPlugin && TpolecatPlugin
+  override def requires: Plugins = ScalafmtPlugin && TpolecatPlugin
 
   override def trigger = allRequirements
 
   override def globalSettings: Seq[Def.Setting[_]] = globals
 
-  override def projectSettings: Seq[Def.Setting[_]] =
-    compilerPlugins ++ releaseSettings ++ projects
+  override def projectSettings: Seq[Def.Setting[_]] = compilerPlugins ++ projects
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafmtConfig := {
@@ -143,21 +102,6 @@ object HouserulesPlugin extends AutoPlugin {
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
     Defaults.itSettings,
     inConfig(IntegrationTest)(scalafmtConfigSettings),
-    commands += Command.command("publishAndRelease") { state =>
-      val validateEnv: String => Unit = key => if (!sys.env.contains(key)) sys.error(s"$$$key is not defined")
-
-      validateEnv("SONATYPE_USERNAME")
-      validateEnv("SONATYPE_PASSWORD")
-
-      val snapshot: Boolean = Project.extract(state).get(isSnapshot)
-
-      if (snapshot) "+publishSigned" :: state
-      else {
-        validateEnv("PGP_SECRING")
-        validateEnv("PGP_PASSWORD")
-        "+publishSigned" :: "sonatypeBundleRelease" :: state
-      }
-    },
     libraryDependencies ++= CrossVersion
       .partialVersion(scalaVersion.value)
       .collect { case (2, _) => "org.typelevel" %% "simulacrum" % "1.0.1" % "provided" }
@@ -188,25 +132,5 @@ object HouserulesPlugin extends AutoPlugin {
         .dependsOn(Compile / scalafmtSbtCheck)
         .value
     }
-  )
-
-  lazy val releaseSettings: Seq[Def.Setting[_]] = Def.settings(
-    releaseCommitMessage := s"Release ${releaseTagName.value}",
-    releaseProcess := Seq[ReleaseStep](
-      checkSnapshotDependencies,
-      releaseStepCommandAndRemaining("scalafmtCheckAll"),
-      runClean,
-      releaseStepCommandAndRemaining("+test"),
-      inquireVersions,
-      setReleaseVersion,
-      ReleaseSteps.updateChangelog,
-      commitReleaseVersion,
-      tagRelease,
-      setNextVersion,
-      ReleaseSteps.commitNextVersion,
-      pushChanges
-    ),
-    releaseTagComment := s"Release ${releaseTagName.value}",
-    releaseTagName := version.value
   )
 }
