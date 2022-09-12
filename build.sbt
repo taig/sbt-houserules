@@ -43,4 +43,4 @@ scalafmtCheckAll := {
     .value
 }
 
-scalaVersion := "2.12.15"
+scalaVersion := "2.12.16"
