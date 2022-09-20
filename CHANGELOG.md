@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+
+_2022_09-20_
+
+* Upgrade sbt-scoverage to 2.0.4
+
 ## 0.5.0
 
 _2022_09-12_
