@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.2
+
+_2022_10-11_
+
+* Upgrade to sbt-scoverage 2.0.5
+* Upgrade to scala 2.12.17
+
 ## 0.5.1
 
 _2022_09-20_
