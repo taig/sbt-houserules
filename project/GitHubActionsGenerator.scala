@@ -8,18 +8,14 @@ object GitHubActionsGenerator {
       "uses" := "actions/setup-java@v3.5.1",
       "with" := Json.obj(
         "distribution" := "temurin",
-        "java-version" := "17"
+        "java-version" := "17",
+        "cache" := "sbt"
       )
     )
 
     val Checkout: Json = Json.obj(
       "name" := "Checkout",
       "uses" := "actions/checkout@v3.1.0"
-    )
-
-    val Cache: Json = Json.obj(
-      "name" := "Cache",
-      "uses" := "coursier/cache-action@v6.3.3"
     )
   }
 
@@ -28,9 +24,8 @@ object GitHubActionsGenerator {
       "name" := "Fatal warnings and code formatting",
       "runs-on" := "ubuntu-latest",
       "steps" := List(
-        Step.SetupJava,
         Step.Checkout,
-        Step.Cache,
+        Step.SetupJava,
         Json.obj(
           "name" := "Workflows",
           "run" := "sbt -Dmode=ci blowoutCheck"
@@ -62,9 +57,8 @@ object GitHubActionsGenerator {
         "runs-on" := "ubuntu-latest",
         "needs" := List("lint"),
         "steps" := List(
-          Step.SetupJava,
           Step.Checkout,
-          Step.Cache,
+          Step.SetupJava,
           Json.obj(
             "name" := "Release",
             "run" := "sbt -Dmode=release ci-release",
