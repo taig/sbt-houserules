@@ -14,7 +14,7 @@ object GitHubActionsGenerator {
 
     val Checkout: Json = Json.obj(
       "name" := "Checkout",
-      "uses" := "actions/checkout@v2.4.2"
+      "uses" := "actions/checkout@v3.1.0"
     )
 
     val Cache: Json = Json.obj(
