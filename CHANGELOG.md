@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0
+
+_2022_10-21_
+
+* Use a `Map` for `scalafmtRules`
+* Upgrade to scalafmt 3.6.0
+* Upgrade to sbt-scoverage 2.0.6
+* Update sbt to 1.7.2 (#4)
+* Upgrade to actions/checkout@v3.1.0
+* Upgrade to actions/setup-java@v3.5.1
+
 ## 0.5.2
 
 _2022_10-11_
