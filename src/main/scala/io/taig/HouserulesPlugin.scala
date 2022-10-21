@@ -19,7 +19,7 @@ object HouserulesPlugin extends AutoPlugin {
       publish / skip := true
     )
 
-    val scalafmtRules = settingKey[Seq[String]]("scalafmt rules")
+    val scalafmtRules = settingKey[Map[String, String]]("scalafmt rules")
   }
 
   import autoImport._
@@ -40,24 +40,24 @@ object HouserulesPlugin extends AutoPlugin {
       val content =
         s"""# Auto generated scalafmt rules
            |# Use `scalafmtRules` sbt setting to modify
-           |${scalafmtRules.value.mkString("\n")}""".stripMargin
+           |${scalafmtRules.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
       IO.write(file, content)
       file
     },
-    scalafmtRules :=
-      "assumeStandardLibraryStripMargin = true" ::
-        "maxColumn = 120" ::
-        "rewrite.rules = [Imports, SortModifiers]" ::
-        "rewrite.imports.sort = original" ::
-        "version = 3.6.0" ::
-        "runner.dialect = " + (CrossVersion.partialVersion(scalaVersion.value) match {
+    scalafmtRules := Map(
+      "assumeStandardLibraryStripMargin" -> "true",
+        "maxColumn" -> "120",
+        "rewrite.rules" -> "[Imports, SortModifiers]",
+        "rewrite.imports.sort" -> "original",
+        "version" -> "3.6.0",
+        "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((2, 11)) => "scala211"
           case Some((2, 12)) => "scala212"
           case Some((2, 13)) => "scala213"
           case Some((3, _))  => "scala3"
           case _             => "default"
-        }) ::
-        Nil,
+        })
+    ),
     tpolecatDefaultOptionsMode := {
       sys.props
         .get("mode")
