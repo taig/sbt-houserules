@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+_2022_11-06_
+
+* Upgrade to scalafmt 3.6.1
+* Upgrade to sbt 1.7.3
+
 ## 0.6.0
 
 _2022_10-21_
