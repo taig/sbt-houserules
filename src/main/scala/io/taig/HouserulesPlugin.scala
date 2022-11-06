@@ -46,17 +46,17 @@ object HouserulesPlugin extends AutoPlugin {
     },
     scalafmtRules := Map(
       "assumeStandardLibraryStripMargin" -> "true",
-        "maxColumn" -> "120",
-        "rewrite.rules" -> "[Imports, SortModifiers]",
-        "rewrite.imports.sort" -> "original",
-        "version" -> "3.6.0",
-        "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
-          case Some((2, 11)) => "scala211"
-          case Some((2, 12)) => "scala212"
-          case Some((2, 13)) => "scala213"
-          case Some((3, _))  => "scala3"
-          case _             => "default"
-        })
+      "maxColumn" -> "120",
+      "rewrite.rules" -> "[Imports, SortModifiers]",
+      "rewrite.imports.sort" -> "original",
+      "version" -> "3.6.1",
+      "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 11)) => "scala211"
+        case Some((2, 12)) => "scala212"
+        case Some((2, 13)) => "scala213"
+        case Some((3, _))  => "scala3"
+        case _             => "default"
+      })
     ),
     tpolecatDefaultOptionsMode := {
       sys.props
