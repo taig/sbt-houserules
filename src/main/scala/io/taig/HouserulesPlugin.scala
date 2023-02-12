@@ -32,7 +32,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Def.Setting[_]] = globals
 
-  override def projectSettings: Seq[Def.Setting[_]] = compilerPlugins ++ projects
+  override def projectSettings: Seq[Def.Setting[_]] = projects
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafmtConfig := {
@@ -73,22 +73,6 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def projectConfigurations: Seq[Configuration] = Seq(IntegrationTest)
 
-  lazy val compilerPlugins: Seq[Def.Setting[_]] = Def.settings(
-    libraryDependencies ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect { case (2, minor) =>
-        val plugins = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1") ::
-          compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full) ::
-          Nil
-
-        val paradise = compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
-
-        if (minor <= 12) paradise :: plugins else plugins
-      }
-      .toList
-      .flatten
-  )
-
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
     githubProject := (LocalRootProject / normalizedName).value,
     organization := "io.taig",
@@ -102,22 +86,6 @@ object HouserulesPlugin extends AutoPlugin {
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
     Defaults.itSettings,
     inConfig(IntegrationTest)(scalafmtConfigSettings),
-    libraryDependencies ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect { case (2, _) => "org.typelevel" %% "simulacrum" % "1.0.1" % "provided" }
-      .toList,
-    scalacOptions ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect { case (2, minor) if minor <= 12 => List("-Xexperimental") }
-      .getOrElse(List.empty),
-    scalacOptions ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect { case (2, minor) if minor >= 13 => "-Ymacro-annotations" }
-      .toList,
-    scalacOptions ++= CrossVersion
-      .partialVersion(scalaVersion.value)
-      .collect { case (2, minor) if minor >= 12 => "-Ywarn-macros:after" }
-      .toList,
     scalafmtAll := {
       (Compile / scalafmt)
         .dependsOn(Test / scalafmt)

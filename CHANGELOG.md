@@ -2,14 +2,14 @@
 
 ## 0.6.1
 
-_2022_11-06_
+_2022-11-06_
 
 * Upgrade to scalafmt 3.6.1
 * Upgrade to sbt 1.7.3
 
 ## 0.6.0
 
-_2022_10-21_
+_2022-10-21_
 
 * Use a `Map` for `scalafmtRules`
 * Upgrade to scalafmt 3.6.0
@@ -20,20 +20,20 @@ _2022_10-21_
 
 ## 0.5.2
 
-_2022_10-11_
+_2022-10-11_
 
 * Upgrade to sbt-scoverage 2.0.5
 * Upgrade to scala 2.12.17
 
 ## 0.5.1
 
-_2022_09-20_
+_2022-09-20_
 
 * Upgrade sbt-scoverage to 2.0.4
 
 ## 0.5.0
 
-_2022_09-12_
+_2022-09-12_
 
 * Remove release helpers in favor of sbt-ci-release
 * Upgrade to scalafmt 3.5.9
@@ -42,7 +42,7 @@ _2022_09-12_
 
 ## 0.4.2
 
-_2022_09-12_
+_2022-09-12_
 
 * Migrate to GitHub Actions
 
