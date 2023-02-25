@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.2
+
+_2023-02-25_
+
+* Drop support for Scala 2.x
+* Update sbt to 1.8.2 (#10)
+* Update sbt-scalafmt to 2.5.0 (#9)
+* Update sbt-scoverage to 2.0.7 (#14)
+* Update sbt-tpolecat to 0.4.2 (#11)
+* Upgrade to scalafmt 3.7.2
+
 ## 0.6.1
 
 _2022-11-06_
