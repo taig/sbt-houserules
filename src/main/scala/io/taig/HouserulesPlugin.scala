@@ -4,7 +4,6 @@ import io.github.davidgregory084._
 import io.github.davidgregory084.TpolecatPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
-import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 import sbt.Keys._
 import sbt._
 
@@ -23,8 +22,6 @@ object HouserulesPlugin extends AutoPlugin {
   }
 
   import autoImport._
-
-  lazy val IntegrationTest = config("it").extend(Test)
 
   override def requires: Plugins = ScalafmtPlugin && TpolecatPlugin
 
@@ -71,8 +68,6 @@ object HouserulesPlugin extends AutoPlugin {
     }
   )
 
-  override def projectConfigurations: Seq[Configuration] = Seq(IntegrationTest)
-
   lazy val globals: Seq[Def.Setting[_]] = Def.settings(
     githubProject := (LocalRootProject / normalizedName).value,
     organization := "io.taig",
@@ -84,19 +79,15 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
-    Defaults.itSettings,
-    inConfig(IntegrationTest)(scalafmtConfigSettings),
     scalafmtAll := {
       (Compile / scalafmt)
         .dependsOn(Test / scalafmt)
-        .dependsOn(IntegrationTest / scalafmt)
         .dependsOn(Compile / scalafmtSbt)
         .value
     },
     scalafmtCheckAll := {
       (Compile / scalafmtCheck)
         .dependsOn(Test / scalafmtCheck)
-        .dependsOn(IntegrationTest / scalafmtCheck)
         .dependsOn(Compile / scalafmtSbtCheck)
         .value
     }
