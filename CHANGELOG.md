@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0
+
+_2023-06-03_
+
+* Remove integration test configurations
+* Upgrade to scala 2.12.18
+* Upgrade to scalafmt 2.7.4
+* Update sbt to 1.9.0 (#18)
+* Upgrade to sbt 1.9.0-RC3
+* Update sbt-ci-release to 1.5.12 (#16)
+
 ## 0.6.2
 
 _2023-02-25_
