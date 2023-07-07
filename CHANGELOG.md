@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.1
+
+_2023-07-07_
+
+* Upgrade to scalafmt 3.7.7
+* Update sbt-tpolecat to 0.4.3 (#24)
+* Update scalafmt-core to 3.7.5 (#22)
+* Update sbt to 1.9.1 (#21)
+* Update sbt-scoverage to 2.0.8 (#19)
+* Remove unused Dockerfile
+
 ## 0.7.0
 
 _2023-06-03_
