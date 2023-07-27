@@ -1,7 +1,7 @@
 val Version = new {
   val SbtScalafmt = "2.5.0"
   val SbtScoverage = "2.0.8"
-  val SbtTpolecat = "0.4.3"
+  val SbtTpolecat = "0.5.0"
   val Scala = "2.12.18"
 }
 
@@ -19,7 +19,7 @@ inThisBuild(
 
 enablePlugins(SbtPlugin, BlowoutYamlPlugin)
 
-addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % Version.SbtTpolecat)
+addSbtPlugin("org.typelevel" % "sbt-tpolecat" % Version.SbtTpolecat)
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % Version.SbtScalafmt)
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % Version.SbtScoverage)
 

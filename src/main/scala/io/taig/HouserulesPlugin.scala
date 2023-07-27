@@ -1,7 +1,7 @@
 package io.taig
 
-import io.github.davidgregory084._
-import io.github.davidgregory084.TpolecatPlugin.autoImport._
+import org.typelevel.sbt.tpolecat._
+import org.typelevel.sbt.tpolecat.TpolecatPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
