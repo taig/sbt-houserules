@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.2
+
+_2023-07-27_
+
+* Upgrade to sbt-tpolecat 0.5.0
+* Update sbt to 1.9.3 (#31)
+
 ## 0.7.1
 
 _2023-07-07_
