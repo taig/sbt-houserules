@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.3
+
+_2023-09-08_
+
+* Upgrade to scalafmt 3.7.14
+* Upgrade to sbt-scalafmt 2.5.2
+* Upgrade to sbt-sccoverage 2.0.9
+* Update sbt to 1.9.4 (#34)
+
 ## 0.7.2
 
 _2023-07-27_
