@@ -6,6 +6,7 @@ import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scala.collection.immutable.ListMap
 
 object HouserulesPlugin extends AutoPlugin {
   object autoImport {
@@ -18,7 +19,7 @@ object HouserulesPlugin extends AutoPlugin {
       publish / skip := true
     )
 
-    val scalafmtRules = settingKey[Map[String, String]]("scalafmt rules")
+    val scalafmtRules = settingKey[ListMap[String, String]]("scalafmt rules")
   }
 
   import autoImport._
@@ -41,19 +42,20 @@ object HouserulesPlugin extends AutoPlugin {
       IO.write(file, content)
       file
     },
-    scalafmtRules := Map(
-      "assumeStandardLibraryStripMargin" -> "true",
+    scalafmtRules := ListMap(
+      "version" -> "3.7.14",
       "maxColumn" -> "120",
+      "assumeStandardLibraryStripMargin" -> "true",
       "rewrite.rules" -> "[Imports, SortModifiers]",
       "rewrite.imports.sort" -> "original",
-      "version" -> "3.7.14",
       "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, 11)) => "scala211"
         case Some((2, 12)) => "scala212"
         case Some((2, 13)) => "scala213"
         case Some((3, _))  => "scala3"
         case _             => "default"
-      })
+      }),
+      "project.excludePaths" -> """["glob:**/metals.sbt"]"""
     ),
     tpolecatDefaultOptionsMode := {
       sys.props
