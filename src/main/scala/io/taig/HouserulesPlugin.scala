@@ -43,7 +43,7 @@ object HouserulesPlugin extends AutoPlugin {
       file
     },
     scalafmtRules := ListMap(
-      "version" -> "3.7.14",
+      "version" -> "3.7.17",
       "maxColumn" -> "120",
       "assumeStandardLibraryStripMargin" -> "true",
       "rewrite.rules" -> "[Imports, SortModifiers]",
