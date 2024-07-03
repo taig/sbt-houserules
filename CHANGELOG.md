@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.7
+
+_2024-07-03_
+
+- Upgrade to sbt-scoverage 2.1.0
+- Upgrade to scalafmt 3.8.2
+- Upgrade to sbt 1.10.0
+- Upgrade to scalafmt 3.8.1
+- Update sbt-tpolecat to 0.5.1 (#50)
+
 ## 0.7.6
 
 _2024-03-05_
