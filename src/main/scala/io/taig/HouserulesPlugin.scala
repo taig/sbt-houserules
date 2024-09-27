@@ -91,7 +91,7 @@ object HouserulesPlugin extends AutoPlugin {
     Seq(Compile, Test).flatMap(scalafixConfigSettings),
     scalafixAll := Def.inputTaskDyn {
       val input: String = DefaultParsers.spaceDelimited("").parsed.toList match {
-        case Nil => ""
+        case Nil       => ""
         case arguments => arguments.mkString(" ", " ", "")
       }
 

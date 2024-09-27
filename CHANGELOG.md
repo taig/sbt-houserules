@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0
+
+_2024-09-27_
+
+- Add scalafix integration
+- Upgrade to scalafmt 3.8.3
+
 ## 0.7.7
 
 _2024-07-03_
