@@ -1,4 +1,5 @@
 val Version = new {
+  val SbtScalafix = "0.12.1"
   val SbtScalafmt = "2.5.2"
   val SbtScoverage = "2.2.1"
   val SbtTpolecat = "0.5.1"
@@ -19,9 +20,10 @@ inThisBuild(
 
 enablePlugins(SbtPlugin, BlowoutYamlPlugin)
 
-addSbtPlugin("org.typelevel" % "sbt-tpolecat" % Version.SbtTpolecat)
+addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % Version.SbtScalafix)
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % Version.SbtScalafmt)
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % Version.SbtScoverage)
+addSbtPlugin("org.typelevel" % "sbt-tpolecat" % Version.SbtTpolecat)
 
 blowoutGenerators ++= {
   val workflows = file(".github") / "workflows"

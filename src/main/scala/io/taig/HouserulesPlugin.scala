@@ -4,9 +4,12 @@ import org.typelevel.sbt.tpolecat._
 import org.typelevel.sbt.tpolecat.TpolecatPlugin.autoImport._
 import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
+import scalafix.sbt.ScalafixPlugin
+import scalafix.sbt.ScalafixPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scala.collection.immutable.ListMap
+import sbt.complete.DefaultParsers
 
 object HouserulesPlugin extends AutoPlugin {
   object autoImport {
@@ -19,12 +22,14 @@ object HouserulesPlugin extends AutoPlugin {
       publish / skip := true
     )
 
+    val scalafixRules = settingKey[ListMap[String, String]]("scalafix rules")
+
     val scalafmtRules = settingKey[ListMap[String, String]]("scalafmt rules")
   }
 
   import autoImport._
 
-  override def requires: Plugins = ScalafmtPlugin && TpolecatPlugin
+  override def requires: Plugins = ScalafixPlugin && ScalafmtPlugin && TpolecatPlugin
 
   override def trigger = allRequirements
 
@@ -74,6 +79,8 @@ object HouserulesPlugin extends AutoPlugin {
     githubProject := (LocalRootProject / normalizedName).value,
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
+    semanticdbEnabled := true,
+    semanticdbVersion := scalafixSemanticdb.revision,
     shellPrompt := { state =>
       val name = Project.extract(state).get(normalizedName)
       s"sbt:$name> "
@@ -81,6 +88,15 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   lazy val projects: Seq[Def.Setting[_]] = Def.settings(
+    Seq(Compile, Test).flatMap(scalafixConfigSettings),
+    scalafixAll := Def.inputTaskDyn {
+      val input: String = DefaultParsers.spaceDelimited("").parsed.toList match {
+        case Nil => ""
+        case arguments => arguments.mkString(" ", " ", "")
+      }
+
+      (Test / scalafix).toTask(input).dependsOn((Compile / scalafix).toTask(input))
+    }.evaluated,
     scalafmtAll := {
       (Compile / scalafmt)
         .dependsOn(Test / scalafmt)
@@ -93,5 +109,36 @@ object HouserulesPlugin extends AutoPlugin {
         .dependsOn(Compile / scalafmtSbtCheck)
         .value
     }
+  )
+
+  def scalafixConfigSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
+    Def.settings(
+      scalafix := {
+        val file = scalafixConfig.value.getOrElse(baseDirectory.value / ".scalafix.conf")
+
+        val content =
+          s"""# Auto generated scalafix rules
+             |# Use `scalafixRules` sbt setting to modify
+             |${scalafixRules.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
+
+        IO.write(file, content)
+
+        scalafix.evaluated
+      },
+      scalafixRules := ListMap(
+        "rules" -> "[DisableSyntax, LeakingImplicitClassVal, NoAutoTupling, NoValInForComprehension, OrganizeImports, RedundantSyntax, RemoveUnused]",
+        "DisableSyntax.noVars" -> "true",
+        "DisableSyntax.noThrows" -> "true",
+        "DisableSyntax.noNulls" -> "true",
+        "DisableSyntax.noReturns" -> "true",
+        "DisableSyntax.noWhileLoops" -> "true",
+        "DisableSyntax.noAsInstanceOf" -> "true",
+        "DisableSyntax.noIsInstanceOf" -> "true",
+        "DisableSyntax.noXml" -> "true",
+        "OrganizeImports.expandRelative" -> "true",
+        "OrganizeImports.removeUnused" -> "true",
+        "OrganizeImports.targetDialect" -> "Scala3"
+      )
+    )
   )
 }
