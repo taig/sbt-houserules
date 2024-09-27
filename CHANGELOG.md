@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.1
+
+_2024-09-27_
+
+- Fix scalafix initialization issues
+- Upgrade to scala 2.12.20
+- Upgrade to sbt-tpolecat 0.5.2
+- Upgrade CI dependencies
+
 ## 0.8.0
 
 _2024-09-27_
