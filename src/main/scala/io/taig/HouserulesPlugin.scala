@@ -22,6 +22,12 @@ object HouserulesPlugin extends AutoPlugin {
       publish / skip := true
     )
 
+    val scalafixGenerateConfig = taskKey[Unit]("Generate scalafix configuration file")
+
+    val scalafixCheck = taskKey[Unit]("scalafix --check")
+
+    val scalafixCheckAll = taskKey[Unit]("scalafixAll --check")
+
     val scalafixRules = settingKey[ListMap[String, String]]("scalafix rules")
 
     val scalafmtRules = settingKey[ListMap[String, String]]("scalafmt rules")
@@ -33,9 +39,44 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = globals
+  override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
+    githubProject := (LocalRootProject / normalizedName).value,
+    organization := "io.taig",
+    organizationHomepage := Some(url("https://taig.io/")),
+    semanticdbEnabled := true,
+    semanticdbVersion := scalafixSemanticdb.revision,
+    shellPrompt := { state =>
+      val name = Project.extract(state).get(normalizedName)
+      s"sbt:$name> "
+    }
+  )
 
-  override def projectSettings: Seq[Def.Setting[_]] = projects
+  override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
+    Seq(Compile, Test).flatMap(scalafixSettings),
+    scalafixAll := {
+      (Test / scalafix)
+        .toTask("")
+        .dependsOn((Compile / scalafix).toTask(""))
+        .value
+    },
+    scalafixCheckAll := {
+      (Test / scalafixCheck)
+        .dependsOn(Compile / scalafixCheck)
+        .value
+    },
+    scalafmtAll := {
+      (Compile / scalafmt)
+        .dependsOn(Test / scalafmt)
+        .dependsOn(Compile / scalafmtSbt)
+        .value
+    },
+    scalafmtCheckAll := {
+      (Compile / scalafmtCheck)
+        .dependsOn(Test / scalafmtCheck)
+        .dependsOn(Compile / scalafmtSbtCheck)
+        .value
+    }
+  )
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafmtConfig := {
@@ -75,45 +116,10 @@ object HouserulesPlugin extends AutoPlugin {
     }
   )
 
-  lazy val globals: Seq[Def.Setting[_]] = Def.settings(
-    githubProject := (LocalRootProject / normalizedName).value,
-    organization := "io.taig",
-    organizationHomepage := Some(url("https://taig.io/")),
-    semanticdbEnabled := true,
-    semanticdbVersion := scalafixSemanticdb.revision,
-    shellPrompt := { state =>
-      val name = Project.extract(state).get(normalizedName)
-      s"sbt:$name> "
-    }
-  )
-
-  lazy val projects: Seq[Def.Setting[_]] = Def.settings(
-    Seq(Compile, Test).flatMap(scalafixConfigSettings),
-    scalafixAll := Def.inputTaskDyn {
-      val input: String = DefaultParsers.spaceDelimited("").parsed.toList match {
-        case Nil       => ""
-        case arguments => arguments.mkString(" ", " ", "")
-      }
-
-      (Test / scalafix).toTask(input).dependsOn((Compile / scalafix).toTask(input))
-    }.evaluated,
-    scalafmtAll := {
-      (Compile / scalafmt)
-        .dependsOn(Test / scalafmt)
-        .dependsOn(Compile / scalafmtSbt)
-        .value
-    },
-    scalafmtCheckAll := {
-      (Compile / scalafmtCheck)
-        .dependsOn(Test / scalafmtCheck)
-        .dependsOn(Compile / scalafmtSbtCheck)
-        .value
-    }
-  )
-
-  def scalafixConfigSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
+  def scalafixSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
     Def.settings(
-      scalafix := {
+      scalafixConfig := Some(scalafixConfig.value.getOrElse(baseDirectory.value / ".scalafix.conf")),
+      scalafixGenerateConfig := {
         val file = scalafixConfig.value.getOrElse(baseDirectory.value / ".scalafix.conf")
 
         val content =
@@ -122,9 +128,9 @@ object HouserulesPlugin extends AutoPlugin {
              |${scalafixRules.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
 
         IO.write(file, content)
-
-        scalafix.evaluated
       },
+      scalafix := scalafix.dependsOn(scalafixGenerateConfig).evaluated,
+      scalafixCheck := scalafix.toTask(" --check").value,
       scalafixRules := ListMap(
         "rules" -> "[DisableSyntax, LeakingImplicitClassVal, NoAutoTupling, NoValInForComprehension, OrganizeImports, RedundantSyntax, RemoveUnused]",
         "DisableSyntax.noVars" -> "true",
