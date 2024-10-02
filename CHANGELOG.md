@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0
+
+_2024-10-02_
+
+- Remove mode parameter in favor of sbt-tpolecat env
+- Update sbt-scalafix to 0.13.0 (#65)
+
 ## 0.8.1
 
 _2024-09-27_
