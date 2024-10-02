@@ -103,17 +103,7 @@ object HouserulesPlugin extends AutoPlugin {
       }),
       "project.excludePaths" -> """["glob:**/metals.sbt"]"""
     ),
-    tpolecatDefaultOptionsMode := {
-      sys.props
-        .get("mode")
-        .map {
-          case "ci"      => CiMode
-          case "dev"     => DevMode
-          case "release" => ReleaseMode
-          case mode      => sys.error(s"Unknown mode '$mode'. Must be one of: ci | dev | release")
-        }
-        .getOrElse(DevMode)
-    }
+    tpolecatDefaultOptionsMode := DevMode
   )
 
   def scalafixSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(

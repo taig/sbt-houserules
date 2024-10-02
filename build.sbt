@@ -28,7 +28,8 @@ addSbtPlugin("org.typelevel" % "sbt-tpolecat" % Version.SbtTpolecat)
 blowoutGenerators ++= {
   val workflows = file(".github") / "workflows"
   BlowoutYamlGenerator.lzy(workflows / "main.yml", GitHubActionsGenerator.main) ::
-    BlowoutYamlGenerator.lzy(workflows / "branches.yml", GitHubActionsGenerator.branches) ::
+    BlowoutYamlGenerator.lzy(workflows / "tag.yml", GitHubActionsGenerator.tag) ::
+    BlowoutYamlGenerator.lzy(workflows / "pull-request.yml", GitHubActionsGenerator.pullRequest) ::
     Nil
 }
 
