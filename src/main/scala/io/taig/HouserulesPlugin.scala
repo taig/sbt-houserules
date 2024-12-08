@@ -29,7 +29,7 @@ object HouserulesPlugin extends AutoPlugin {
     val scalafixCheckAll = taskKey[Unit]("scalafixAll --check")
 
     val scalafixConfiguration = settingKey[Seq[(String, String)]]("scalafix configration")
-    
+
     val scalafixConfigurationRules = settingKey[Seq[String]]("scalafix rules")
 
     val scalafmtConfiguration = settingKey[Seq[(String, String)]]("scalafmt configration")
@@ -51,9 +51,13 @@ object HouserulesPlugin extends AutoPlugin {
       val name = Project.extract(state).get(normalizedName)
       s"sbt:$name> "
     }
-  )
+  ) ++ scalafmtPresets ++ scalafixPresets
 
   override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
+    scalafmtConfiguration := (ThisBuild / scalafmtConfiguration).value,
+    Seq(Default).flatMap(scalafmtSettings),
+    scalafixConfiguration := (ThisBuild / scalafixConfiguration).value,
+    scalafixConfigurationRules := (ThisBuild / scalafixConfigurationRules).value,
     Seq(Compile, Test).flatMap(scalafixSettings),
     scalafixAll := {
       (Test / scalafix)
@@ -81,31 +85,65 @@ object HouserulesPlugin extends AutoPlugin {
   )
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtConfig := {
-      val file = (LocalRootProject / baseDirectory).value / ".scalafmt.conf"
-      val content =
-        s"""# Auto generated scalafmt configuration
-           |# Use `scalafmtConfiguration` sbt setting to modify
-           |${scalafmtConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
-      IO.write(file, content)
-      file
-    },
-    scalafmtConfiguration := List(
-      "version" -> "3.8.3",
-      "maxColumn" -> "120",
-      "assumeStandardLibraryStripMargin" -> "true",
-      "rewrite.rules" -> "[Imports, SortModifiers]",
-      "rewrite.imports.sort" -> "original",
-      "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, 11)) => "scala211"
-        case Some((2, 12)) => "scala212"
-        case Some((2, 13)) => "scala213"
-        case Some((3, _))  => "scala3"
-        case _             => "default"
-      }),
-      "project.excludePaths" -> """["glob:**/metals.sbt"]"""
-    ),
+    scalafmtConfiguration := (Global / scalafmtConfiguration).value,
+    scalafixConfiguration := (Global / scalafixConfiguration).value,
+    scalafixConfigurationRules := (Global / scalafixConfigurationRules).value,
     tpolecatDefaultOptionsMode := DevMode
+  )
+
+  def scalafmtPresets: Seq[Def.Setting[_]] = scalafmtConfiguration := List(
+    "version" -> "3.8.3",
+    "maxColumn" -> "120",
+    "assumeStandardLibraryStripMargin" -> "true",
+    "rewrite.rules" -> "[Imports, SortModifiers]",
+    "rewrite.imports.sort" -> "original",
+    "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 11)) => "scala211"
+      case Some((2, 12)) => "scala212"
+      case Some((2, 13)) => "scala213"
+      case Some((3, _))  => "scala3"
+      case _             => "default"
+    }),
+    "project.excludePaths" -> """["glob:**/metals.sbt"]"""
+  )
+
+  def scalafmtSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
+    Def.settings(
+      scalafmtConfig := {
+        val file = (LocalRootProject / baseDirectory).value / ".scalafmt.conf"
+        val content =
+          s"""# Auto generated scalafmt configuration
+             |# Use `scalafmtConfiguration` sbt setting to modify
+             |${scalafmtConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
+        IO.write(file, content)
+        file
+      }
+    )
+  )
+
+  def scalafixPresets: Seq[Def.Setting[_]] = Def.settings(
+    scalafixConfiguration := List(
+      "DisableSyntax.noVars" -> "true",
+      "DisableSyntax.noThrows" -> "true",
+      "DisableSyntax.noNulls" -> "true",
+      "DisableSyntax.noReturns" -> "true",
+      "DisableSyntax.noWhileLoops" -> "true",
+      "DisableSyntax.noAsInstanceOf" -> "true",
+      "DisableSyntax.noIsInstanceOf" -> "true",
+      "DisableSyntax.noXml" -> "true",
+      "OrganizeImports.expandRelative" -> "true",
+      "OrganizeImports.removeUnused" -> "true",
+      "OrganizeImports.targetDialect" -> "Scala3"
+    ),
+    scalafixConfigurationRules := List(
+      "DisableSyntax",
+      "LeakingImplicitClassVal",
+      "NoAutoTupling",
+      "NoValInForComprehension",
+      "OrganizeImports",
+      "RedundantSyntax",
+      "RemoveUnused"
+    )
   )
 
   def scalafixSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
@@ -126,28 +164,8 @@ object HouserulesPlugin extends AutoPlugin {
       },
       scalafix := scalafix.dependsOn(scalafixGenerateConfig).evaluated,
       scalafixCheck := scalafix.toTask(" --check").value,
-      scalafixConfiguration := List(
-        "DisableSyntax.noVars" -> "true",
-        "DisableSyntax.noThrows" -> "true",
-        "DisableSyntax.noNulls" -> "true",
-        "DisableSyntax.noReturns" -> "true",
-        "DisableSyntax.noWhileLoops" -> "true",
-        "DisableSyntax.noAsInstanceOf" -> "true",
-        "DisableSyntax.noIsInstanceOf" -> "true",
-        "DisableSyntax.noXml" -> "true",
-        "OrganizeImports.expandRelative" -> "true",
-        "OrganizeImports.removeUnused" -> "true",
-        "OrganizeImports.targetDialect" -> "Scala3"
-      ),
-      scalafixConfigurationRules := List(
-        "DisableSyntax",
-        "LeakingImplicitClassVal",
-        "NoAutoTupling",
-        "NoValInForComprehension",
-        "OrganizeImports",
-        "RedundantSyntax",
-        "RemoveUnused"
-      )
+      scalafixConfiguration := (Default / scalafixConfiguration).value,
+      scalafixConfigurationRules := (Default / scalafixConfigurationRules).value
     )
   )
 }
