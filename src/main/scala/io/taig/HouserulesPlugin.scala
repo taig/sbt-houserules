@@ -28,9 +28,11 @@ object HouserulesPlugin extends AutoPlugin {
 
     val scalafixCheckAll = taskKey[Unit]("scalafixAll --check")
 
-    val scalafixRules = settingKey[ListMap[String, String]]("scalafix rules")
+    val scalafixConfiguration = settingKey[List[(String, String)]]("scalafix configration")
+    
+    val scalafixConfigurationRules = settingKey[List[String]]("scalafix rules")
 
-    val scalafmtRules = settingKey[ListMap[String, String]]("scalafmt rules")
+    val scalafmtConfiguration = settingKey[List[(String, String)]]("scalafmt configration")
   }
 
   import autoImport._
@@ -82,13 +84,13 @@ object HouserulesPlugin extends AutoPlugin {
     scalafmtConfig := {
       val file = (LocalRootProject / baseDirectory).value / ".scalafmt.conf"
       val content =
-        s"""# Auto generated scalafmt rules
-           |# Use `scalafmtRules` sbt setting to modify
-           |${scalafmtRules.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
+        s"""# Auto generated scalafmt configuration
+           |# Use `scalafmtConfiguration` sbt setting to modify
+           |${scalafmtConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
       IO.write(file, content)
       file
     },
-    scalafmtRules := ListMap(
+    scalafmtConfiguration := List(
       "version" -> "3.8.3",
       "maxColumn" -> "120",
       "assumeStandardLibraryStripMargin" -> "true",
@@ -113,16 +115,18 @@ object HouserulesPlugin extends AutoPlugin {
         val file = scalafixConfig.value.getOrElse(baseDirectory.value / ".scalafix.conf")
 
         val content =
-          s"""# Auto generated scalafix rules
-             |# Use `scalafixRules` sbt setting to modify
-             |${scalafixRules.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
+          s"""# Auto generated scalafix configuration
+             |# Use `scalafixConfiguration` sbt setting to modify
+             |${scalafixConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}
+             |
+             |# Use `scalafixConfiguration` sbt setting to modify
+             |rules = ${scalafixConfigurationRules.value.mkString("[", ", ", "]")}""".stripMargin
 
         IO.write(file, content)
       },
       scalafix := scalafix.dependsOn(scalafixGenerateConfig).evaluated,
       scalafixCheck := scalafix.toTask(" --check").value,
-      scalafixRules := ListMap(
-        "rules" -> "[DisableSyntax, LeakingImplicitClassVal, NoAutoTupling, NoValInForComprehension, OrganizeImports, RedundantSyntax, RemoveUnused]",
+      scalafixConfiguration := List(
         "DisableSyntax.noVars" -> "true",
         "DisableSyntax.noThrows" -> "true",
         "DisableSyntax.noNulls" -> "true",
@@ -134,6 +138,15 @@ object HouserulesPlugin extends AutoPlugin {
         "OrganizeImports.expandRelative" -> "true",
         "OrganizeImports.removeUnused" -> "true",
         "OrganizeImports.targetDialect" -> "Scala3"
+      ),
+      scalafixConfigurationRules := List(
+        "DisableSyntax",
+        "LeakingImplicitClassVal",
+        "NoAutoTupling",
+        "NoValInForComprehension",
+        "OrganizeImports",
+        "RedundantSyntax",
+        "RemoveUnused"
       )
     )
   )
