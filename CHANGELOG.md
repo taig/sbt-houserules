@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.0
+
+_2024-12-08_
+
+- More scopes to edit scalafmt & scalafix configs
+- Use Seq instead of List for better sbt interop
+- Extract scalafix rules into separare sbt setting
+- Upgrade to sbt 1.10.6
+- Update sbt, scripted-plugin to 1.10.4 (#72)
+- Update sbt-ci-release to 1.9.0 (#71)
+- Update sbt-scoverage to 2.2.2 (#70)
+- Update sbt, scripted-plugin to 1.10.3 (#69)
+- Update sbt-ci-release to 1.8.0 (#68)
+- Update sbt-ci-release to 1.7.0 (#67)
+- Fetch entire git history to resolve proper version information
+
 ## 0.9.0
 
 _2024-10-02_
