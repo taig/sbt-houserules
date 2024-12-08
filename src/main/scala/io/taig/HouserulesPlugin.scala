@@ -28,11 +28,11 @@ object HouserulesPlugin extends AutoPlugin {
 
     val scalafixCheckAll = taskKey[Unit]("scalafixAll --check")
 
-    val scalafixConfiguration = settingKey[List[(String, String)]]("scalafix configration")
+    val scalafixConfiguration = settingKey[Seq[(String, String)]]("scalafix configration")
     
-    val scalafixConfigurationRules = settingKey[List[String]]("scalafix rules")
+    val scalafixConfigurationRules = settingKey[Seq[String]]("scalafix rules")
 
-    val scalafmtConfiguration = settingKey[List[(String, String)]]("scalafmt configration")
+    val scalafmtConfiguration = settingKey[Seq[(String, String)]]("scalafmt configration")
   }
 
   import autoImport._
