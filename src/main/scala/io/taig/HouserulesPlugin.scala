@@ -113,7 +113,6 @@ object HouserulesPlugin extends AutoPlugin {
     Def.settings(
       scalafmtConfig := {
         val file = sourceDirectory.value / ".scalafmt.conf"
-        println("Generating scalafmt configuration: " + file)
         val content =
           s"""# Auto generated scalafmt configuration
              |# Use `scalafmtConfiguration` sbt setting to modify
@@ -151,6 +150,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   def scalafixSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
     Def.settings(
+      scalafixConfig := Some(scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")),
       scalafixGenerateConfig := {
         val file = scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")
 
