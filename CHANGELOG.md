@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.1
+
+_2024-12-09_
+
+- Fix .scalafmt.conf generation
+
 ## 0.10.0
 
 _2024-12-08_
