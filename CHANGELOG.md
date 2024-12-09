@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.2
+
+_2024-12-09_
+
+- Fix .scalafix.conf generation
+
 ## 0.10.1
 
 _2024-12-09_
