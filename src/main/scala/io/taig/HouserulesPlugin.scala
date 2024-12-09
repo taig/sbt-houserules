@@ -30,7 +30,7 @@ object HouserulesPlugin extends AutoPlugin {
 
     val scalafixConfigurationRules = settingKey[Seq[String]]("scalafix rules")
 
-    val scalafmtCheckCi = taskKey[Unit]("scalafmtCheckSbt & scalafmtAll")
+    val scalafmtGenerateConfig = taskKey[Unit]("Generate scalafmt configuration file")
 
     val scalafmtConfiguration = settingKey[Seq[(String, String)]]("scalafmt configration")
   }
@@ -50,16 +50,27 @@ object HouserulesPlugin extends AutoPlugin {
       val name = Project.extract(state).get(normalizedName)
       s"sbt:$name> "
     }
-  ) ++ scalafixPresets
+  ) ++ scalafmtGlobalSettings ++ scalafixGlobalSettings
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
+    tpolecatDefaultOptionsMode := DevMode
+  ) ++ scalafmtBuildSettings ++ scalafixBuildSettings
+
+  override def projectSettings: Seq[Def.Setting[_]] = scalafmtProjectSettings ++ scalafixProjectSettings
+
+  def scalafmtGlobalSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafmtConfiguration := List(
       "version" -> "3.8.3",
       "maxColumn" -> "120",
       "assumeStandardLibraryStripMargin" -> "true",
       "rewrite.rules" -> "[Imports, SortModifiers]",
       "rewrite.imports.sort" -> "original",
-      "project.excludePaths" -> """["glob:**/metals.sbt"]""",
+      "project.excludePaths" -> """["glob:**/metals.sbt"]"""
+    )
+  )
+
+  def scalafmtBuildSettings: Seq[Def.Setting[_]] = Def.settings(
+    scalafmtConfiguration ++= List(
       "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, 11)) => "scala211"
         case Some((2, 12)) => "scala212"
@@ -68,7 +79,11 @@ object HouserulesPlugin extends AutoPlugin {
         case _             => "default"
       })
     ),
-    scalafmtConfig := {
+    scalafmtPrintDiff := true
+  )
+
+  def scalafmtProjectSettings: Seq[Def.Setting[_]] = Def.settings(
+    scalafmtGenerateConfig := {
       val target = scalafmtConfig.value
       val configuration = scalafmtConfiguration.value
       val content =
@@ -76,32 +91,33 @@ object HouserulesPlugin extends AutoPlugin {
            |# Use `scalafmtConfiguration` sbt setting to modify
            |${configuration.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
       IO.write(target, content)
-      target
     },
-    scalafmtPrintDiff := true,
-    scalafixConfiguration := (Global / scalafixConfiguration).value,
-    scalafixConfigurationRules := (Global / scalafixConfigurationRules).value,
-    tpolecatDefaultOptionsMode := DevMode
-  )
-
-  override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafixConfiguration := (ThisBuild / scalafixConfiguration).value,
-    scalafixConfigurationRules := (ThisBuild / scalafixConfigurationRules).value,
-    Seq(Compile, Test).flatMap(scalafixSettings),
-    scalafixAll := {
-      (Test / scalafix)
-        .toTask("")
-        .dependsOn((Compile / scalafix).toTask(""))
+    scalafmtConfig := sourceDirectory.value / ".scalafmt.conf",
+    Seq(Compile, Test).flatMap { configuration =>
+      inConfig(configuration)(
+        Def.settings(
+          scalafmt := scalafmt.dependsOn(scalafmtGenerateConfig).value,
+          scalafmtCheck := scalafmtCheck.dependsOn(scalafmtGenerateConfig).value,
+          scalafmtSbt := scalafmtSbt.dependsOn(scalafmtGenerateConfig).value,
+          scalafmtSbtCheck := scalafmtSbtCheck.dependsOn(scalafmtGenerateConfig).value
+        )
+      )
+    },
+    scalafmtAll := {
+      (Compile / scalafmt)
+        .dependsOn(Test / scalafmt)
+        .dependsOn(Compile / scalafmtSbt)
         .value
     },
-    scalafixCheckAll := {
-      (Test / scalafixCheck)
-        .dependsOn(Compile / scalafixCheck)
+    scalafmtCheckAll := {
+      (Compile / scalafmtCheck)
+        .dependsOn(Test / scalafmtCheck)
+        .dependsOn(Compile / scalafmtSbtCheck)
         .value
     }
   )
 
-  def scalafixPresets: Seq[Def.Setting[_]] = Def.settings(
+  def scalafixGlobalSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafixConfiguration := List(
       "DisableSyntax.noVars" -> "true",
       "DisableSyntax.noThrows" -> "true",
@@ -126,26 +142,41 @@ object HouserulesPlugin extends AutoPlugin {
     )
   )
 
-  def scalafixSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
-    Def.settings(
-      scalafixConfig := Some(scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")),
-      scalafixGenerateConfig := {
-        val file = scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")
+  def scalafixBuildSettings: Seq[Def.Setting[_]] = Def.settings()
 
-        val content =
-          s"""# Auto generated scalafix configuration
-             |# Use `scalafixConfiguration` sbt setting to modify
-             |${scalafixConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}
-             |
-             |# Use `scalafixConfiguration` sbt setting to modify
-             |rules = ${scalafixConfigurationRules.value.mkString("[", ", ", "]")}""".stripMargin
+  def scalafixProjectSettings: Seq[Def.Setting[_]] = Def.settings(
+    scalafixAll := {
+      (Test / scalafix)
+        .toTask("")
+        .dependsOn((Compile / scalafix).toTask(""))
+        .value
+    },
+    scalafixCheckAll := {
+      (Test / scalafixCheck)
+        .dependsOn(Compile / scalafixCheck)
+        .value
+    },
+    scalafixGenerateConfig := {
+      val file = scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")
 
-        IO.write(file, content)
-      },
-      scalafix := scalafix.dependsOn(scalafixGenerateConfig).evaluated,
-      scalafixCheck := scalafix.toTask(" --check").value,
-      scalafixConfiguration := (Default / scalafixConfiguration).value,
-      scalafixConfigurationRules := (Default / scalafixConfigurationRules).value
-    )
+      val content =
+        s"""# Auto generated scalafix configuration
+           |# Use `scalafixConfiguration` sbt setting to modify
+           |${scalafixConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}
+           |
+           |# Use `scalafixConfiguration` sbt setting to modify
+           |rules = ${scalafixConfigurationRules.value.mkString("[", ", ", "]")}""".stripMargin
+
+      IO.write(file, content)
+    },
+    scalafixConfig := Some(scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")),
+    Seq(Compile, Test).flatMap { configuration =>
+      inConfig(configuration)(
+        Def.settings(
+          scalafix := scalafix.dependsOn(scalafixGenerateConfig).evaluated,
+          scalafixCheck := scalafix.toTask(" --check").value
+        )
+      )
+    }
   )
 }
