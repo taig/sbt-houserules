@@ -35,7 +35,7 @@ object GitHubActionsGenerator {
         ),
         Json.obj(
           "name" := "Code formatting",
-          "run" := "sbt scalafmtCheckAll"
+          "run" := "sbt scalafmtSbtCheck scalafmtCheckAll"
         ),
         Json.obj(
           "name" := "Fatal warnings",

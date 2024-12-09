@@ -30,6 +30,8 @@ object HouserulesPlugin extends AutoPlugin {
 
     val scalafixConfigurationRules = settingKey[Seq[String]]("scalafix rules")
 
+    val scalafmtCheckCi = taskKey[Unit]("scalafmtCheckSbt & scalafmtAll")
+
     val scalafmtConfiguration = settingKey[Seq[(String, String)]]("scalafmt configration")
   }
 
@@ -48,18 +50,41 @@ object HouserulesPlugin extends AutoPlugin {
       val name = Project.extract(state).get(normalizedName)
       s"sbt:$name> "
     }
-  ) ++ scalafmtPresets ++ scalafixPresets
+  ) ++ scalafixPresets
+
+  override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
+    scalafmtConfiguration := List(
+      "version" -> "3.8.3",
+      "maxColumn" -> "120",
+      "assumeStandardLibraryStripMargin" -> "true",
+      "rewrite.rules" -> "[Imports, SortModifiers]",
+      "rewrite.imports.sort" -> "original",
+      "project.excludePaths" -> """["glob:**/metals.sbt"]""",
+      "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 11)) => "scala211"
+        case Some((2, 12)) => "scala212"
+        case Some((2, 13)) => "scala213"
+        case Some((3, _))  => "scala3"
+        case _             => "default"
+      })
+    ),
+    scalafmtConfig := {
+      val target = scalafmtConfig.value
+      val configuration = scalafmtConfiguration.value
+      val content =
+        s"""# Auto generated scalafmt configuration
+           |# Use `scalafmtConfiguration` sbt setting to modify
+           |${configuration.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
+      IO.write(target, content)
+      target
+    },
+    scalafmtPrintDiff := true,
+    scalafixConfiguration := (Global / scalafixConfiguration).value,
+    scalafixConfigurationRules := (Global / scalafixConfigurationRules).value,
+    tpolecatDefaultOptionsMode := DevMode
+  )
 
   override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtConfiguration := (ThisBuild / scalafmtConfiguration).value,
-    scalafmtConfiguration += "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 11)) => "scala211"
-      case Some((2, 12)) => "scala212"
-      case Some((2, 13)) => "scala213"
-      case Some((3, _))  => "scala3"
-      case _             => "default"
-    }),
-    Seq(Compile, Test).flatMap(scalafmtSettings),
     scalafixConfiguration := (ThisBuild / scalafixConfiguration).value,
     scalafixConfigurationRules := (ThisBuild / scalafixConfigurationRules).value,
     Seq(Compile, Test).flatMap(scalafixSettings),
@@ -73,51 +98,7 @@ object HouserulesPlugin extends AutoPlugin {
       (Test / scalafixCheck)
         .dependsOn(Compile / scalafixCheck)
         .value
-    },
-    scalafmtAll := {
-      (Compile / scalafmt)
-        .dependsOn(Test / scalafmt)
-        .dependsOn(Compile / scalafmtSbt)
-        .value
-    },
-    scalafmtCheckAll := {
-      (Compile / scalafmtCheck)
-        .dependsOn(Test / scalafmtCheck)
-        .dependsOn(Compile / scalafmtSbtCheck)
-        .value
     }
-  )
-
-  override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtConfiguration := (Global / scalafmtConfiguration).value,
-    scalafixConfiguration := (Global / scalafixConfiguration).value,
-    scalafixConfigurationRules := (Global / scalafixConfigurationRules).value,
-    tpolecatDefaultOptionsMode := DevMode
-  )
-
-  def scalafmtPresets: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtConfiguration := List(
-      "version" -> "3.8.3",
-      "maxColumn" -> "120",
-      "assumeStandardLibraryStripMargin" -> "true",
-      "rewrite.rules" -> "[Imports, SortModifiers]",
-      "rewrite.imports.sort" -> "original",
-      "project.excludePaths" -> """["glob:**/metals.sbt"]"""
-    )
-  )
-
-  def scalafmtSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
-    Def.settings(
-      scalafmtConfig := {
-        val file = sourceDirectory.value / ".scalafmt.conf"
-        val content =
-          s"""# Auto generated scalafmt configuration
-             |# Use `scalafmtConfiguration` sbt setting to modify
-             |${scalafmtConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}""".stripMargin
-        IO.write(file, content)
-        file
-      }
-    )
   )
 
   def scalafixPresets: Seq[Def.Setting[_]] = Def.settings(

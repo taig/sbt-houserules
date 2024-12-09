@@ -25,6 +25,6 @@ jobs:
     - name: Workflows
       run: sbt blowoutCheck
     - name: Code formatting
-      run: sbt scalafmtCheckAll
+      run: sbt scalafmtSbtCheck scalafmtCheckAll
     - name: Fatal warnings
       run: sbt compile
