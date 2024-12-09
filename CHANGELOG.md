@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.3
+
+_2024-12-09_
+
+- More control over scalafmt scopes
+- Remove githubProject setting
+
 ## 0.10.2
 
 _2024-12-09_
