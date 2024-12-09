@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.4
+
+_2024-12-09_
+
+- Ensure scalafix config generation on scalafixCheck
+
 ## 0.10.3
 
 _2024-12-09_
