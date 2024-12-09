@@ -55,7 +55,14 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
     scalafmtConfiguration := (ThisBuild / scalafmtConfiguration).value,
-    Seq(Default).flatMap(scalafmtSettings),
+    scalafmtConfiguration += "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 11)) => "scala211"
+      case Some((2, 12)) => "scala212"
+      case Some((2, 13)) => "scala213"
+      case Some((3, _))  => "scala3"
+      case _             => "default"
+    }),
+    Seq(Compile, Test).flatMap(scalafmtSettings),
     scalafixConfiguration := (ThisBuild / scalafixConfiguration).value,
     scalafixConfigurationRules := (ThisBuild / scalafixConfigurationRules).value,
     Seq(Compile, Test).flatMap(scalafixSettings),
@@ -91,26 +98,22 @@ object HouserulesPlugin extends AutoPlugin {
     tpolecatDefaultOptionsMode := DevMode
   )
 
-  def scalafmtPresets: Seq[Def.Setting[_]] = scalafmtConfiguration := List(
-    "version" -> "3.8.3",
-    "maxColumn" -> "120",
-    "assumeStandardLibraryStripMargin" -> "true",
-    "rewrite.rules" -> "[Imports, SortModifiers]",
-    "rewrite.imports.sort" -> "original",
-    "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 11)) => "scala211"
-      case Some((2, 12)) => "scala212"
-      case Some((2, 13)) => "scala213"
-      case Some((3, _))  => "scala3"
-      case _             => "default"
-    }),
-    "project.excludePaths" -> """["glob:**/metals.sbt"]"""
+  def scalafmtPresets: Seq[Def.Setting[_]] = Def.settings(
+    scalafmtConfiguration := List(
+      "version" -> "3.8.3",
+      "maxColumn" -> "120",
+      "assumeStandardLibraryStripMargin" -> "true",
+      "rewrite.rules" -> "[Imports, SortModifiers]",
+      "rewrite.imports.sort" -> "original",
+      "project.excludePaths" -> """["glob:**/metals.sbt"]"""
+    )
   )
 
   def scalafmtSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
     Def.settings(
       scalafmtConfig := {
-        val file = (LocalRootProject / baseDirectory).value / ".scalafmt.conf"
+        val file = sourceDirectory.value / ".scalafmt.conf"
+        println("Generating scalafmt configuration: " + file)
         val content =
           s"""# Auto generated scalafmt configuration
              |# Use `scalafmtConfiguration` sbt setting to modify
@@ -148,9 +151,8 @@ object HouserulesPlugin extends AutoPlugin {
 
   def scalafixSettings(configuration: Configuration): Seq[Def.Setting[_]] = inConfig(configuration)(
     Def.settings(
-      scalafixConfig := Some(scalafixConfig.value.getOrElse(baseDirectory.value / ".scalafix.conf")),
       scalafixGenerateConfig := {
-        val file = scalafixConfig.value.getOrElse(baseDirectory.value / ".scalafix.conf")
+        val file = scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")
 
         val content =
           s"""# Auto generated scalafix configuration
