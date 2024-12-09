@@ -13,8 +13,6 @@ import sbt.complete.DefaultParsers
 
 object HouserulesPlugin extends AutoPlugin {
   object autoImport {
-    val githubProject = settingKey[String]("Github project identifier")
-
     val noPublishSettings: Seq[Def.Setting[_]] = Def.settings(
       publish := {},
       publishLocal := {},
@@ -42,7 +40,6 @@ object HouserulesPlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
-    githubProject := (LocalRootProject / normalizedName).value,
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
     semanticdbEnabled := true,
