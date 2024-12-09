@@ -157,14 +157,14 @@ object HouserulesPlugin extends AutoPlugin {
         .value
     },
     scalafixGenerateConfig := {
-      val file = scalafixConfig.value.getOrElse(sourceDirectory.value / ".scalafix.conf")
+      val file = scalafixConfig.value.getOrElse(sys.error("scalafixConfig is not defined"))
 
       val content =
         s"""# Auto generated scalafix configuration
            |# Use `scalafixConfiguration` sbt setting to modify
            |${scalafixConfiguration.value.map { case (key, value) => s"$key = $value" }.mkString("\n")}
            |
-           |# Use `scalafixConfiguration` sbt setting to modify
+           |# Use `scalafixConfigurationRules` sbt setting to modify
            |rules = ${scalafixConfigurationRules.value.mkString("[", ", ", "]")}""".stripMargin
 
       IO.write(file, content)
@@ -174,7 +174,7 @@ object HouserulesPlugin extends AutoPlugin {
       inConfig(configuration)(
         Def.settings(
           scalafix := scalafix.dependsOn(scalafixGenerateConfig).evaluated,
-          scalafixCheck := scalafix.toTask(" --check").value
+          scalafixCheck := scalafix.toTask(" --check").dependsOn(scalafixGenerateConfig).value
         )
       )
     }
