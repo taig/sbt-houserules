@@ -36,7 +36,7 @@ object HouserulesScalafixPlugin extends AutoPlugin {
       "DisableSyntax.noXml" -> "true",
       "OrganizeImports.expandRelative" -> "true",
       "OrganizeImports.removeUnused" -> "true",
-      "OrganizeImports.targetDialect" -> "Scala3"
+      "OrganizeImports.targetDialect" -> "Auto"
     ),
     scalafixConfigurationRules := List(
       "DisableSyntax",
