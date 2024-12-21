@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.1
+
+_2024-12-21_
+
+- Use Map instead of Seq for scalafmt and scalafix configuration
+- Set OrganizeImports.targetDialect to Auto
+
 ## 0.11.0
 
 _2024-12-21_
