@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.0
+
+_2024-12-21_
+
+- Split plugin into root, scalafix, scalafmt and tpolecat plugins
+- Update sbt-ci-release to 1.9.2 (#75)
+
 ## 0.10.4
 
 _2024-12-09_
