@@ -4,12 +4,13 @@ import org.scalafmt.sbt.ScalafmtPlugin
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scala.collection.immutable.ListMap
 
 object HouserulesScalafmtPlugin extends AutoPlugin {
   object autoImport {
     val scalafmtGenerateConfig = taskKey[Unit]("Generate scalafmt configuration file")
 
-    val scalafmtConfiguration = settingKey[Seq[(String, String)]]("scalafmt configration")
+    val scalafmtConfiguration = settingKey[Map[String, String]]("scalafmt configration")
   }
 
   import autoImport._
@@ -19,7 +20,7 @@ object HouserulesScalafmtPlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtConfiguration := List(
+    scalafmtConfiguration := ListMap(
       "version" -> "3.8.3",
       "maxColumn" -> "120",
       "assumeStandardLibraryStripMargin" -> "true",
@@ -30,7 +31,7 @@ object HouserulesScalafmtPlugin extends AutoPlugin {
   )
 
   override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtConfiguration ++= List(
+    scalafmtConfiguration ++= ListMap(
       "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, 11)) => "scala211"
         case Some((2, 12)) => "scala212"

@@ -4,6 +4,7 @@ import scalafix.sbt.ScalafixPlugin
 import scalafix.sbt.ScalafixPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scala.collection.immutable.ListMap
 
 object HouserulesScalafixPlugin extends AutoPlugin {
   object autoImport {
@@ -13,7 +14,7 @@ object HouserulesScalafixPlugin extends AutoPlugin {
 
     val scalafixCheckAll = taskKey[Unit]("scalafixAll --check")
 
-    val scalafixConfiguration = settingKey[Seq[(String, String)]]("scalafix configration")
+    val scalafixConfiguration = settingKey[Map[String, String]]("scalafix configration")
 
     val scalafixConfigurationRules = settingKey[Seq[String]]("scalafix rules")
   }
@@ -25,7 +26,7 @@ object HouserulesScalafixPlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafixConfiguration := List(
+    scalafixConfiguration := ListMap(
       "DisableSyntax.noVars" -> "true",
       "DisableSyntax.noThrows" -> "true",
       "DisableSyntax.noNulls" -> "true",
