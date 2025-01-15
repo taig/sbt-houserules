@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.11.2
+
+_2025-01-15_
+
+- Upgrade to sbt-scalafix 0.14.0
+- Upgrade to sbt-scoverage 2.3.0
+- Upgrade to sbt-scalafmt 2.5.3
+- Upgrade to scalafmt 3.8.4
+- Update sbt, scripted-plugin to 1.10.7 (#77)
+- Update sbt-blowout-yaml-circe to 0.1.2 (#76)
+
 ## 0.11.1
 
 _2024-12-21_
