@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.3
+
+_2025-01-17_
+
+- Upgrade to scalafmt 3.8.5
+- Upgrade to sbt-scalafmt 2.5.4
+
 ## 0.11.2
 
 _2025-01-15_
