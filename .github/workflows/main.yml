@@ -5,12 +5,13 @@ name: CI
   push:
     branches:
     - main
-env:
-  SBT_TPOLECAT_CI: 'true'
 jobs:
-  lint:
-    name: Fatal warnings and code formatting
+  blowout:
+    name: Blowout
     runs-on: ubuntu-latest
+    env:
+      SBT_TPOLECAT_DEV: 'true'
+    needs: []
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -24,17 +25,56 @@ jobs:
         cache: sbt
     - name: Setup sbt
       uses: sbt/setup-sbt@v1
-    - name: Workflows
-      run: sbt blowoutCheck
-    - name: Code formatting
-      run: sbt scalafmtSbtCheck scalafmtCheckAll
-    - name: Fatal warnings
-      run: sbt compile
+    - run: sbt blowoutCheck
+  scalafmt:
+    name: Scalafmt
+    runs-on: ubuntu-latest
+    env:
+      SBT_TPOLECAT_DEV: 'true'
+    needs: []
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+        cache: sbt
+    - name: Setup sbt
+      uses: sbt/setup-sbt@v1
+    - run: sbt scalafmtSbtCheck scalafmtCheckAll
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      SBT_TPOLECAT_CI: 'true'
+    needs: []
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+        cache: sbt
+    - name: Setup sbt
+      uses: sbt/setup-sbt@v1
+    - run: sbt combpile
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    env:
+      SBT_TPOLECAT_RELEASE: 'true'
     needs:
-    - lint
+    - blowout
+    - scalafmt
+    - build
     steps:
     - name: Checkout
       uses: actions/checkout@v4
