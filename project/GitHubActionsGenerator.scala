@@ -56,7 +56,7 @@ object GitHubActionsGenerator {
       Step.Checkout,
       Step.SetupJava,
       Step.SetupSbt,
-      Json.obj("run" := "sbt combpile")
+      Json.obj("run" := "sbt compile")
     )
 
     val Deploy: Json = Job(name = "Deploy", mode = "RELEASE", needs = List("blowout", "scalafmt", "build"))(
