@@ -8,7 +8,7 @@ object GitHubActionsGenerator {
       "uses" := "actions/setup-java@v4",
       "with" := Json.obj(
         "distribution" := "temurin",
-        "java-version" := "17",
+        "java-version" := "21",
         "cache" := "sbt"
       )
     )
