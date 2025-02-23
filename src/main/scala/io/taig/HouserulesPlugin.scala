@@ -6,9 +6,6 @@ import sbt._
 object HouserulesPlugin extends AutoPlugin {
   object autoImport {
     val noPublishSettings: Seq[Def.Setting[_]] = Def.settings(
-      publish := {},
-      publishLocal := {},
-      publishArtifact := false,
       publish / skip := true
     )
   }
