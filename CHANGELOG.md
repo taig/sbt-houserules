@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.5
+
+_2025-05-10_
+
+- Upgrade to scalafmt 3.9.6
+- Update sbt-scalafix to 0.14.3 (#94)
+- Update sbt, scripted-plugin to 1.10.11 (#91)
+- Update sbt-ci-release to 1.9.3 (#89)
+- Update sbt, scripted-plugin to 1.10.10 (#87)
+- Update sbt, scripted-plugin to 1.10.9 (#86)
+- Update scalafmt-core to 3.9.2 (#85)
+- Change noPublishSettings to publish / skip
+
 ## 0.11.4
 
 _2025-02-21_
