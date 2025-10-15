@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.11.7
+
+_2025-10-15_
+
+- Upgrade to scalafmt 3.10.0
+- Upgrade to scalafix 0.14.4
+- Update sbt, scripted-plugin to 1.11.7 (#110)
+- Update sbt, scripted-plugin to 1.11.6 (#108)
+- Update sbt, scripted-plugin to 1.11.5 (#107)
+- Update sbt-ci-release to 1.11.2 (#106)
+
 ## 0.11.6
 
 _2025-08-14_
