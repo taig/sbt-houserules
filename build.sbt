@@ -3,7 +3,7 @@ val Version = new {
   val SbtScalafmt = "2.5.5"
   val SbtScoverage = "2.4.0"
   val SbtTpolecat = "0.5.2"
-  val Scala = "2.12.20"
+  val Scala = "2.13.18"
 }
 
 inThisBuild(
