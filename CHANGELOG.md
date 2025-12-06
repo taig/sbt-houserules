@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.8
+
+_2025-12-06_
+
+- Upgrade to sbt-scoverage 2.4.2
+- Upgrade to scalafmt 3.10.2
+- Upgrade to sbt-scalafmt 2.5.6
+
 ## 0.11.7
 
 _2025-10-15_
