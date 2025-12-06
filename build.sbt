@@ -1,6 +1,6 @@
 val Version = new {
   val SbtScalafix = "0.14.4"
-  val SbtScalafmt = "2.5.5"
+  val SbtScalafmt = "2.5.6"
   val SbtScoverage = "2.4.0"
   val SbtTpolecat = "0.5.2"
   val Scala = "2.12.20"
