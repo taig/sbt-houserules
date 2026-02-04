@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.11.9
+
+_2026-02-04_
+
+- Upgrade to scalafmt 3.10.6
+- Upgrade to sbt-scalafix 0.14.5
+- Upgrade to sbt 1.12.2
+- Update sbt, scripted-plugin to 1.12.1 (#126)
+- Update sbt-scoverage to 2.4.4 (#125)
+- Update sbt, scripted-plugin to 1.12.0 (#124)
+- Update scala-library to 2.12.21 (#121)
+
 ## 0.11.8
 
 _2025-12-06_
