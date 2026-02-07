@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.10
+
+_2026-02-07_
+
+- Disable RemoveUnused.imports to avoid conflicts with OrganizeImports.removeUnused
+- Upgrade to sbt-tpolecat 0.5.3
+
 ## 0.11.9
 
 _2026-02-04_
