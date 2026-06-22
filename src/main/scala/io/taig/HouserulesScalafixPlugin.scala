@@ -25,7 +25,7 @@ object HouserulesScalafixPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
+  override def globalSettings: Seq[Def.Setting[?]] = Def.settings(
     scalafixConfiguration := ListMap(
       "DisableSyntax.noVars" -> "true",
       "DisableSyntax.noThrows" -> "true",
@@ -57,9 +57,9 @@ object HouserulesScalafixPlugin extends AutoPlugin {
     semanticdbVersion := scalafixSemanticdb.revision
   )
 
-  override def buildSettings: Seq[Def.Setting[_]] = Def.settings()
+  override def buildSettings: Seq[Def.Setting[?]] = Def.settings()
 
-  override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
+  override def projectSettings: Seq[Def.Setting[?]] = Def.settings(
     scalafixAll := {
       (Test / scalafix)
         .toTask("")
@@ -71,7 +71,7 @@ object HouserulesScalafixPlugin extends AutoPlugin {
         .dependsOn(Compile / scalafixCheck)
         .value
     },
-    scalafixGenerateConfig := {
+    scalafixGenerateConfig := Def.uncached {
       val file = scalafixConfig.value.getOrElse(sys.error("scalafixConfig is not defined"))
 
       val content =

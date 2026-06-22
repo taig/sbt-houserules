@@ -9,11 +9,11 @@ object HouserulesTpolecatPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = Def.settings()
+  override def globalSettings: Seq[Def.Setting[?]] = Def.settings()
 
-  override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
+  override def buildSettings: Seq[Def.Setting[?]] = Def.settings(
     tpolecatDefaultOptionsMode := DevMode
   )
 
-  override def projectSettings: Seq[Def.Setting[_]] = Def.settings()
+  override def projectSettings: Seq[Def.Setting[?]] = Def.settings()
 }

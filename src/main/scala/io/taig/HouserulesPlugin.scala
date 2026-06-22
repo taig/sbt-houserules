@@ -5,7 +5,7 @@ import sbt._
 
 object HouserulesPlugin extends AutoPlugin {
   object autoImport {
-    val noPublishSettings: Seq[Def.Setting[_]] = Def.settings(
+    val noPublishSettings: Seq[Def.Setting[?]] = Def.settings(
       publish / skip := true
     )
   }
@@ -14,7 +14,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
+  override def globalSettings: Seq[Def.Setting[?]] = Def.settings(
     organization := "io.taig",
     organizationHomepage := Some(url("https://taig.io/")),
     shellPrompt := { state =>
@@ -23,7 +23,7 @@ object HouserulesPlugin extends AutoPlugin {
     }
   )
 
-  override def buildSettings: Seq[Def.Setting[_]] = Def.settings()
+  override def buildSettings: Seq[Def.Setting[?]] = Def.settings()
 
-  override def projectSettings: Seq[Def.Setting[_]] = Def.settings()
+  override def projectSettings: Seq[Def.Setting[?]] = Def.settings()
 }
