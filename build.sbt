@@ -1,11 +1,11 @@
 inThisBuild(
   Def.settings(
-    developers := List(Developer("taig", "Niklas Klein", "mail@taig.io", url("https://taig.io/"))),
+    developers := List(Developer("taig", "Niklas Klein", "mail@taig.io", uri("https://taig.io/"))),
     dynverVTagPrefix := false,
-    homepage := Some(url("https://github.com/taig/sbt-houserules/")),
-    licenses := List("MIT" -> url("https://raw.githubusercontent.com/taig/sbt-houserules/main/LICENSE")),
+    homepage := Some(uri("https://github.com/taig/sbt-houserules/")),
+    licenses := List("MIT" -> uri("https://raw.githubusercontent.com/taig/sbt-houserules/main/LICENSE")),
     organization := "io.taig",
-    organizationHomepage := Some(url("https://taig.io/")),
+    organizationHomepage := Some(uri("https://taig.io/")),
     versionScheme := Some("early-semver")
   )
 )

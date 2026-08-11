@@ -16,7 +16,7 @@ object HouserulesPlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Def.Setting[?]] = Def.settings(
     organization := "io.taig",
-    organizationHomepage := Some(url("https://taig.io/")),
+    organizationHomepage := Some(uri("https://taig.io/")),
     shellPrompt := { state =>
       val name = Project.extract(state).get(normalizedName)
       s"sbt:$name> "
