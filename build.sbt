@@ -12,14 +12,10 @@ inThisBuild(
 
 enablePlugins(SbtPlugin)
 
-// sbt-git's GitPlugin is auto-enabled by sbt-ci-release, but only its GitVersioning
-// companion consumes these keys, and versioning is handled by sbt-dynver instead.
-Global / excludeLintKeys ++= Set(git.gitUncommittedChanges, git.gitDescribedVersion)
-
 addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.14.7")
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.6.1")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.6.2")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.4.4")
-addSbtPlugin("org.typelevel" % "sbt-tpolecat" % "0.5.6")
+addSbtPlugin("org.typelevel" % "sbt-tpolecat" % "0.5.7")
 
 name := "sbt-houserules"
 
