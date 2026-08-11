@@ -19,9 +19,9 @@ object HouserulesScalafmtPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def globalSettings: Seq[Def.Setting[_]] = Def.settings(
+  override def globalSettings: Seq[Def.Setting[?]] = Def.settings(
     scalafmtConfiguration := ListMap(
-      "version" -> "3.10.6",
+      "version" -> "3.11.5",
       "maxColumn" -> "120",
       "assumeStandardLibraryStripMargin" -> "true",
       "rewrite.rules" -> "[Imports, SortModifiers]",
@@ -30,7 +30,7 @@ object HouserulesScalafmtPlugin extends AutoPlugin {
     )
   )
 
-  override def buildSettings: Seq[Def.Setting[_]] = Def.settings(
+  override def buildSettings: Seq[Def.Setting[?]] = Def.settings(
     scalafmtConfiguration ++= ListMap(
       "runner.dialect" -> (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, 11)) => "scala211"
@@ -43,8 +43,8 @@ object HouserulesScalafmtPlugin extends AutoPlugin {
     scalafmtPrintDiff := true
   )
 
-  override def projectSettings: Seq[Def.Setting[_]] = Def.settings(
-    scalafmtGenerateConfig := {
+  override def projectSettings: Seq[Def.Setting[?]] = Def.settings(
+    scalafmtGenerateConfig := Def.uncached {
       val target = scalafmtConfig.value
       val configuration = scalafmtConfiguration.value
       val content =
