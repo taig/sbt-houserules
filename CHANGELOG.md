@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.12.0
+
+_2026-08-11_
+
+- Upgrade to sbt 2.0.6 (requires sbt 2, no longer compatible with sbt 1)
+- Upgrade to scala 3.8.4
+- Upgrade to scalafmt 3.11.5
+- Upgrade to sbt-scalafmt 2.6.2
+- Upgrade to sbt-scalafix 0.14.7
+- Replace deprecated `url(...)` with `uri(...)`
+- Remove sbt-blowout-yaml in favor of hand-maintained GitHub Actions workflows
+- Update sbt, scripted-plugin to 1.12.15 (#158)
+- Update sbt, scripted-plugin to 1.12.14 (#153)
+- Update sbt-ci-release to 1.12.0 (#151)
+- Update sbt-tpolecat to 0.5.7 (#149)
+- Update sbt, scripted-plugin to 1.12.13 (#148)
+- Update sbt-tpolecat to 0.5.6 (#145)
+- Update sbt, scripted-plugin to 1.12.12 (#144)
+- Update sbt-tpolecat to 0.5.5 (#142)
+- Update sbt-tpolecat to 0.5.4 (#140)
+- Update sbt, scripted-plugin to 1.12.11 (#139)
+- Update sbt, scripted-plugin to 1.12.10 (#138)
+- Update sbt, scripted-plugin to 1.12.9 (#136)
+- Update sbt, scripted-plugin to 1.12.8 (#135)
+- Update sbt, scripted-plugin to 1.12.6 (#134)
+- Update sbt, scripted-plugin to 1.12.5 (#133)
+- Update sbt-scalafix to 0.14.6 (#132)
+- Update sbt, scripted-plugin to 1.12.4 (#131)
+- Update sbt, scripted-plugin to 1.12.3 (#130)
+
 ## 0.11.10
 
 _2026-02-07_
