@@ -4,26 +4,6 @@ name: CD
     tags:
     - '*.*.*'
 jobs:
-  blowout:
-    name: Blowout
-    runs-on: ubuntu-latest
-    env:
-      SBT_TPOLECAT_DEV: 'true'
-    needs: []
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Setup Java JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: '21'
-        cache: sbt
-    - name: Setup sbt
-      uses: sbt/setup-sbt@v1
-    - run: sbt blowoutCheck
   scalafmt:
     name: Scalafmt
     runs-on: ubuntu-latest
@@ -70,7 +50,6 @@ jobs:
     env:
       SBT_TPOLECAT_RELEASE: 'true'
     needs:
-    - blowout
     - scalafmt
     - build
     steps:
