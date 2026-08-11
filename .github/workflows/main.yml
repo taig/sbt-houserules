@@ -23,7 +23,7 @@ jobs:
         cache: sbt
     - name: Setup sbt
       uses: sbt/setup-sbt@v1
-    - run: sbt scalafmtSbtCheck scalafmtCheckAll
+    - run: sbt "scalafmtSbtCheck; scalafmtCheckAll"
   build:
     name: Build
     runs-on: ubuntu-latest
