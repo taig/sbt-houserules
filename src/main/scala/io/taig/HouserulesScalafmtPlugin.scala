@@ -21,7 +21,7 @@ object HouserulesScalafmtPlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Def.Setting[?]] = Def.settings(
     scalafmtConfiguration := ListMap(
-      "version" -> "3.11.1",
+      "version" -> "3.11.5",
       "maxColumn" -> "120",
       "assumeStandardLibraryStripMargin" -> "true",
       "rewrite.rules" -> "[Imports, SortModifiers]",
