@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.1
+
+_2026-10-29_
+
+- Update scala3-library to 3.9.0 (#163)
+- Update sbt-scalafix to 0.14.9 (#165)
+- Update sbt-scalafix to 0.14.8 (#164)
+- Update sbt-ci-release to 1.12.1 (#160)
+- Update sbt to 2.0.12 (#169)
+- Update sbt to 2.0.11 (#168)
+- Update sbt to 2.0.10 (#167)
+- Update sbt to 2.0.9 (#166)
+- Update sbt to 2.0.8 (#162)
+- Update sbt to 2.0.7 (#161)
+
 ## 0.12.0
 
 _2026-08-11_
