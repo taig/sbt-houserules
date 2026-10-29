@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.12.2
+
+_2026-10-29_
+
+- **Compile with the Scala version of sbt 2.0.x**  
+  0.12.1 was compiled with Scala 3.9.0, which put scala3-library 3.9.0 on
+  the meta-build classpath of consumers. sbt 2.0.x compiles with 3.8.4 and
+  cannot read its TASTy, so builds using 0.12.1 failed to load. Use 0.12.2
+  instead of 0.12.1.
+
 ## 0.12.1
 
 _2026-10-29_
